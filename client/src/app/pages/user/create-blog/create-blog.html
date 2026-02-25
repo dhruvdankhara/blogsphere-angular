@@ -1,0 +1,120 @@
+<div>
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Create Story</h1>
+
+  <form (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- Title -->
+    <div>
+      <input
+        type="text"
+        pInputText
+        [(ngModel)]="title"
+        name="title"
+        (ngModelChange)="generateSlug()"
+        class="w-full text-3xl font-bold border-0 border-b border-gray-200 rounded-none px-0 focus:ring-0"
+        placeholder="Title"
+      />
+    </div>
+
+    <!-- Slug -->
+    <div>
+      <label class="block text-sm font-medium text-gray-500 mb-1">Slug</label>
+      <input
+        type="text"
+        pInputText
+        [(ngModel)]="slug"
+        name="slug"
+        class="w-full"
+        placeholder="url-friendly-slug"
+      />
+    </div>
+
+    <!-- Feature Image -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Feature Image</label>
+      @if (featureImagePreview) {
+        <div class="relative mb-3">
+          <img [src]="featureImagePreview" class="w-full max-h-64 object-cover rounded-lg" />
+          <button
+            type="button"
+            (click)="removeImage()"
+            class="absolute top-2 right-2 bg-white rounded-full p-1 shadow cursor-pointer border-0"
+          >
+            <i class="pi pi-times text-gray-500"></i>
+          </button>
+        </div>
+      } @else {
+        <p-fileupload
+          mode="basic"
+          accept="image/*"
+          [maxFileSize]="5000000"
+          chooseLabel="Upload Image"
+          (onSelect)="onImageSelect($event)"
+          [auto]="false"
+          chooseStyleClass="p-button-outlined p-button-secondary"
+        />
+      }
+    </div>
+
+    <!-- Content Editor -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Content</label>
+      <p-editor
+        [(ngModel)]="content"
+        name="content"
+        [style]="{ height: '400px' }"
+        placeholder="Tell your story..."
+      />
+    </div>
+
+    <!-- Category & Tags -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+        <p-select
+          [options]="categories()"
+          [(ngModel)]="selectedCategory"
+          name="category"
+          optionLabel="name"
+          optionValue="_id"
+          placeholder="Select category"
+          [showClear]="true"
+          styleClass="w-full"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+        <p-multiselect
+          [options]="tags()"
+          [(ngModel)]="selectedTags"
+          name="tags"
+          optionLabel="name"
+          optionValue="_id"
+          placeholder="Select tags"
+          styleClass="w-full"
+        />
+      </div>
+    </div>
+
+    <!-- Toggles -->
+    <div class="flex items-center gap-8">
+      <div class="flex items-center gap-2">
+        <p-toggleswitch [(ngModel)]="isPublic" name="isPublic" />
+        <label class="text-sm text-gray-700">Public</label>
+      </div>
+      <div class="flex items-center gap-2">
+        <p-toggleswitch [(ngModel)]="isDraft" name="isDraft" />
+        <label class="text-sm text-gray-700">Save as Draft</label>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="flex gap-3 pt-4">
+      <p-button
+        type="submit"
+        [label]="isDraft ? 'Save Draft' : 'Publish'"
+        [loading]="loading()"
+        severity="contrast"
+      />
+    </div>
+  </form>
+</div>

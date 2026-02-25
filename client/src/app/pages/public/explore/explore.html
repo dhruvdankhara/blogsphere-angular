@@ -1,0 +1,80 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <h1 class="text-4xl font-bold text-gray-900 mb-2">Explore</h1>
+  <p class="text-lg text-gray-500 mb-10">
+    Discover stories, topics, and writers across BlogSphere.
+  </p>
+
+  <!-- Topics / Tags -->
+  @if (tags().length) {
+    <section class="mb-12">
+      <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+        Trending Topics
+      </h2>
+      <div class="flex flex-wrap gap-2">
+        @for (tag of tags(); track tag._id) {
+          <app-tag-chip [name]="tag.name" [slug]="tag.slug" />
+        }
+      </div>
+    </section>
+  }
+
+  <!-- Categories -->
+  @if (categories().length) {
+    <section class="mb-12">
+      <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+        Browse Categories
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        @for (cat of categories(); track cat._id) {
+          <a [routerLink]="['/category', cat.slug]" class="no-underline group">
+            <div class="relative rounded-lg overflow-hidden h-40 bg-gray-100">
+              @if (cat.featureImage) {
+                <img
+                  [src]="cat.featureImage"
+                  [alt]="cat.name"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <div class="absolute inset-0 bg-black/30"></div>
+              }
+              <div class="absolute inset-0 flex flex-col justify-end p-4">
+                <h3
+                  class="text-lg font-bold"
+                  [class]="cat.featureImage ? 'text-white' : 'text-gray-900'"
+                >
+                  {{ cat.name }}
+                </h3>
+                @if (cat.description) {
+                  <p
+                    class="text-sm line-clamp-2"
+                    [class]="cat.featureImage ? 'text-gray-200' : 'text-gray-500'"
+                  >
+                    {{ cat.description }}
+                  </p>
+                }
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- Recommended Blogs -->
+  <section>
+    <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+      Recommended Reading
+    </h2>
+    @if (loading()) {
+      <div class="flex justify-center py-10">
+        <p-progressSpinner strokeWidth="3" />
+      </div>
+    } @else {
+      @for (blog of blogs(); track blog._id) {
+        <app-blog-card [blog]="blog" />
+      }
+      @if (!blogs().length) {
+        <p class="text-center text-gray-400 py-10">No stories to explore yet</p>
+      }
+    }
+  </section>
+</div>

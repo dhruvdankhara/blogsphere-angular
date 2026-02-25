@@ -1,0 +1,132 @@
+<div class="min-h-screen bg-white">
+  <!-- Top bar -->
+  <header class="sticky top-0 z-50 bg-white border-b border-gray-200">
+    <div class="max-w-screen-2xl mx-auto px-4 flex items-center justify-between h-14">
+      <a routerLink="/dashboard" class="text-xl font-bold text-gray-900 no-underline">
+        BlogSphere
+      </a>
+      <div class="flex items-center gap-3">
+        <a routerLink="/explore" class="text-gray-500 hover:text-gray-900">
+          <i class="pi pi-compass text-xl"></i>
+        </a>
+        @if (auth.isAdmin()) {
+          <a routerLink="/admin" class="text-gray-500 hover:text-gray-900">
+            <i class="pi pi-shield text-xl"></i>
+          </a>
+        }
+        <div class="relative">
+          <p-avatar
+            [image]="auth.user()?.avatar || ''"
+            [label]="auth.user()?.avatar ? '' : auth.user()?.name?.[0] || 'U'"
+            shape="circle"
+            class="cursor-pointer"
+            (click)="menu.toggle($event)"
+            styleClass="bg-gray-200 text-gray-700"
+            size="normal"
+          />
+          <p-menu #menu [model]="userMenuItems" [popup]="true" appendTo="body" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-screen-2xl mx-auto flex">
+    <!-- Left Sidebar -->
+    <aside
+      class="hidden lg:flex flex-col w-60 border-r border-gray-100 p-4 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto"
+    >
+      <nav class="flex flex-col gap-1">
+        @for (item of navItems; track item.route) {
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="bg-gray-100 text-gray-900 font-semibold"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 no-underline transition-colors"
+          >
+            <i [class]="item.icon"></i>
+            <span>{{ item.label }}</span>
+          </a>
+        }
+      </nav>
+    </aside>
+
+    <!-- Center Content -->
+    <main class="flex-1 min-w-0 border-r border-gray-100">
+      <div class="max-w-2xl mx-auto px-4 py-6">
+        <router-outlet />
+      </div>
+    </main>
+
+    <!-- Right Sidebar (hidden on smaller screens) -->
+    <aside class="hidden xl:block w-80 p-6 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
+      <div class="mb-8">
+        <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">
+          Recommended Topics
+        </h3>
+        <div class="flex flex-wrap gap-2">
+          <a
+            routerLink="/explore"
+            class="px-3 py-1.5 bg-gray-100 rounded-full text-sm text-gray-600 hover:bg-gray-200 no-underline"
+          >
+            Technology
+          </a>
+          <a
+            routerLink="/explore"
+            class="px-3 py-1.5 bg-gray-100 rounded-full text-sm text-gray-600 hover:bg-gray-200 no-underline"
+          >
+            Programming
+          </a>
+          <a
+            routerLink="/explore"
+            class="px-3 py-1.5 bg-gray-100 rounded-full text-sm text-gray-600 hover:bg-gray-200 no-underline"
+          >
+            Science
+          </a>
+          <a
+            routerLink="/explore"
+            class="px-3 py-1.5 bg-gray-100 rounded-full text-sm text-gray-600 hover:bg-gray-200 no-underline"
+          >
+            Design
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">
+          Quick Links
+        </h3>
+        <div class="flex flex-col gap-2">
+          <a routerLink="/about" class="text-sm text-gray-500 hover:text-gray-700 no-underline"
+            >About</a
+          >
+          <a routerLink="/terms" class="text-sm text-gray-500 hover:text-gray-700 no-underline"
+            >Terms</a
+          >
+          <a routerLink="/privacy" class="text-sm text-gray-500 hover:text-gray-700 no-underline"
+            >Privacy</a
+          >
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+    <div class="flex justify-around items-center h-14">
+      <a routerLink="/dashboard" routerLinkActive="text-gray-900" class="text-gray-400 p-2">
+        <i class="pi pi-home text-xl"></i>
+      </a>
+      <a routerLink="/explore" routerLinkActive="text-gray-900" class="text-gray-400 p-2">
+        <i class="pi pi-compass text-xl"></i>
+      </a>
+      <a routerLink="/create" routerLinkActive="text-gray-900" class="text-gray-400 p-2">
+        <i class="pi pi-plus-circle text-xl"></i>
+      </a>
+      <a routerLink="/bookmarks" routerLinkActive="text-gray-900" class="text-gray-400 p-2">
+        <i class="pi pi-bookmark text-xl"></i>
+      </a>
+      <a routerLink="/settings" routerLinkActive="text-gray-900" class="text-gray-400 p-2">
+        <i class="pi pi-user text-xl"></i>
+      </a>
+    </div>
+  </nav>
+</div>

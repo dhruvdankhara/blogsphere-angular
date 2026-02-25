@@ -1,0 +1,91 @@
+<div>
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">My Stories</h1>
+    <a routerLink="/create">
+      <p-button icon="pi pi-plus" label="New Story" severity="contrast" />
+    </a>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center py-10">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else {
+    <p-tabs [value]="0">
+      <p-tablist>
+        <p-tab [value]="0">Published ({{ published().length }})</p-tab>
+        <p-tab [value]="1">Drafts ({{ drafts().length }})</p-tab>
+      </p-tablist>
+      <p-tabpanels>
+        <p-tabpanel [value]="0">
+          @for (blog of published(); track blog._id) {
+            <div class="flex items-center justify-between py-4 border-b border-gray-100">
+              <div class="min-w-0 flex-1">
+                <a
+                  [routerLink]="['/blog', blog.slug]"
+                  class="text-lg font-semibold text-gray-900 no-underline hover:underline"
+                >
+                  {{ blog.title }}
+                </a>
+                <p class="text-sm text-gray-500 mt-1">
+                  {{ blog.createdAt | date: 'MMM d, y' }} &middot; {{ blog.visits }} views
+                  @if (!blog.isPublic) {
+                    &middot; <span class="text-orange-500">Unlisted</span>
+                  }
+                </p>
+              </div>
+              <div class="flex items-center gap-2 ml-4">
+                <a [routerLink]="['/edit', blog.slug]">
+                  <p-button icon="pi pi-pencil" [text]="true" size="small" severity="secondary" />
+                </a>
+                <p-button
+                  icon="pi pi-trash"
+                  [text]="true"
+                  size="small"
+                  severity="danger"
+                  (click)="deleteBlog(blog.slug)"
+                />
+              </div>
+            </div>
+          }
+          @if (!published().length) {
+            <p class="text-center text-gray-400 py-10">No published stories</p>
+          }
+        </p-tabpanel>
+        <p-tabpanel [value]="1">
+          @for (blog of drafts(); track blog._id) {
+            <div class="flex items-center justify-between py-4 border-b border-gray-100">
+              <div class="min-w-0 flex-1">
+                <span class="text-lg font-semibold text-gray-900">{{ blog.title }}</span>
+                <p class="text-sm text-gray-500 mt-1">
+                  Last edited {{ blog.updatedAt | date: 'MMM d, y' }}
+                </p>
+              </div>
+              <div class="flex items-center gap-2 ml-4">
+                <a [routerLink]="['/edit', blog.slug]">
+                  <p-button
+                    icon="pi pi-pencil"
+                    label="Continue editing"
+                    [text]="true"
+                    size="small"
+                    severity="secondary"
+                  />
+                </a>
+                <p-button
+                  icon="pi pi-trash"
+                  [text]="true"
+                  size="small"
+                  severity="danger"
+                  (click)="deleteBlog(blog.slug)"
+                />
+              </div>
+            </div>
+          }
+          @if (!drafts().length) {
+            <p class="text-center text-gray-400 py-10">No drafts</p>
+          }
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  }
+</div>

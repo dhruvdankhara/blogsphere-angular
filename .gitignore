@@ -1,0 +1,5 @@
+.env
+tmpclaude-*
+.vscode
+.bin
+node_modules

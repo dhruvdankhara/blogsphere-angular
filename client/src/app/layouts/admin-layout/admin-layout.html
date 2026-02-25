@@ -1,0 +1,56 @@
+<div class="min-h-screen bg-gray-50 flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col sticky top-0 h-screen">
+    <!-- Logo -->
+    <div class="p-4 border-b border-gray-200">
+      <a routerLink="/admin" class="text-xl font-bold text-gray-900 no-underline">
+        BlogSphere <span class="text-sm font-normal text-gray-500">Admin</span>
+      </a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 p-3 flex flex-col gap-1 overflow-y-auto">
+      @for (item of navItems; track item.route) {
+        <a
+          [routerLink]="item.route"
+          [routerLinkActiveOptions]="{ exact: item.route === '/admin' }"
+          routerLinkActive="bg-gray-900 text-white"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100 no-underline transition-colors"
+        >
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+
+    <!-- Bottom -->
+    <div class="p-4 border-t border-gray-200">
+      <a
+        routerLink="/dashboard"
+        class="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 no-underline mb-3"
+      >
+        <i class="pi pi-arrow-left"></i>
+        Back to Site
+      </a>
+      <div class="flex items-center gap-3">
+        <p-avatar
+          [image]="auth.user()?.avatar || ''"
+          [label]="auth.user()?.avatar ? '' : auth.user()?.name?.[0] || 'A'"
+          shape="circle"
+          styleClass="bg-gray-200 text-gray-700"
+        />
+        <div class="min-w-0">
+          <p class="text-sm font-medium text-gray-900 truncate">{{ auth.user()?.name }}</p>
+          <p class="text-xs text-gray-500 truncate">Admin</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-auto">
+    <div class="p-6">
+      <router-outlet />
+    </div>
+  </main>
+</div>

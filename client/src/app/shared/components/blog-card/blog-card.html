@@ -1,0 +1,55 @@
+<article class="flex gap-6 py-6 border-b border-gray-100">
+  <div class="flex-1 min-w-0">
+    <!-- Author info -->
+    <div class="flex items-center gap-2 mb-2">
+      <p-avatar
+        [image]="blog().author?.avatar || ''"
+        [label]="blog().author?.avatar ? '' : blog().author?.name?.[0] || 'U'"
+        shape="circle"
+        styleClass="bg-gray-200 text-gray-600"
+      />
+      <a
+        [routerLink]="['/profile', blog().author?.username]"
+        class="text-sm font-medium text-gray-700 hover:text-gray-900 no-underline"
+      >
+        {{ blog().author?.name }}
+      </a>
+      <span class="text-gray-300">&middot;</span>
+      <span class="text-sm text-gray-500">{{ blog().createdAt | date: 'MMM d' }}</span>
+    </div>
+
+    <!-- Title & Preview -->
+    <a [routerLink]="['/blog', blog().slug]" class="no-underline">
+      <h2 class="text-xl font-bold text-gray-900 mb-1 line-clamp-2 hover:text-gray-700">
+        {{ blog().title }}
+      </h2>
+      <p class="text-gray-500 text-sm line-clamp-2 mb-3">
+        {{ getContentPreview() }}
+      </p>
+    </a>
+
+    <!-- Meta -->
+    <div class="flex items-center gap-3">
+      @if (blog().category) {
+        <a [routerLink]="['/category', blog().category?.slug]" class="no-underline">
+          <p-tag [value]="blog().category?.name || ''" severity="secondary" />
+        </a>
+      }
+      <span class="text-sm text-gray-400">{{ getReadTime() }} min read</span>
+      @if (blog().visits > 0) {
+        <span class="text-sm text-gray-400">{{ blog().visits }} views</span>
+      }
+    </div>
+  </div>
+
+  <!-- Thumbnail -->
+  @if (blog().featureImage) {
+    <a [routerLink]="['/blog', blog().slug]" class="flex-shrink-0">
+      <img
+        [src]="blog().featureImage"
+        [alt]="blog().title"
+        class="w-28 h-28 sm:w-36 sm:h-28 object-cover rounded-md"
+      />
+    </a>
+  }
+</article>

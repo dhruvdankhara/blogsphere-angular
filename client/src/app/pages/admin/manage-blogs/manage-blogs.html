@@ -1,0 +1,93 @@
+<div>
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Manage Blogs</h1>
+      <p class="text-sm text-gray-500 mt-1">View and manage all blog posts</p>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="flex items-center gap-3">
+      <div class="p-inputgroup flex-1" style="max-width: 400px">
+        <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+        <input
+          type="text"
+          pInputText
+          placeholder="Search blogs by title..."
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+          (keyup.enter)="onSearch()"
+        />
+      </div>
+      <p-button label="Search" icon="pi pi-search" (click)="onSearch()" severity="contrast" />
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center py-20">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else {
+    <p-table
+      [value]="blogs()"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [tableStyle]="{ 'min-width': '60rem' }"
+      stripedRows
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="title">Title <p-sortIcon field="title" /></th>
+          <th>Author</th>
+          <th pSortableColumn="visits">Visits <p-sortIcon field="visits" /></th>
+          <th>Public</th>
+          <th>Draft</th>
+          <th pSortableColumn="createdAt">Created <p-sortIcon field="createdAt" /></th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-blog>
+        <tr>
+          <td class="font-medium text-gray-900 max-w-xs truncate">{{ blog.title }}</td>
+          <td class="text-gray-600">{{ blog.author?.name || 'Unknown' }}</td>
+          <td class="text-gray-600">{{ blog.visits }}</td>
+          <td>
+            @if (blog.isPublic) {
+              <p-tag value="Public" severity="success" />
+            } @else {
+              <p-tag value="Unlisted" severity="warn" />
+            }
+          </td>
+          <td>
+            @if (blog.isDraft) {
+              <p-tag value="Draft" severity="warn" />
+            } @else {
+              <p-tag value="Published" severity="success" />
+            }
+          </td>
+          <td class="text-gray-500">{{ blog.createdAt | date: 'MMM d, y' }}</td>
+          <td>
+            <div class="flex items-center gap-1">
+              <a [routerLink]="['/blog', blog.slug]">
+                <p-button icon="pi pi-eye" [text]="true" severity="info" size="small" />
+              </a>
+              <p-button
+                icon="pi pi-trash"
+                [text]="true"
+                severity="danger"
+                size="small"
+                (click)="deleteBlog(blog)"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="text-center text-gray-400 py-10">No blogs found</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+</div>

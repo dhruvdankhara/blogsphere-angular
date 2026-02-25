@@ -1,0 +1,30 @@
+<div class="flex items-center gap-3 py-3">
+  <a [routerLink]="['/profile', user().username]">
+    <p-avatar
+      [image]="user().avatar || ''"
+      [label]="user().avatar ? '' : user().name?.[0] || 'U'"
+      shape="circle"
+      styleClass="bg-gray-200 text-gray-700"
+    />
+  </a>
+  <div class="flex-1 min-w-0">
+    <a
+      [routerLink]="['/profile', user().username]"
+      class="text-sm font-medium text-gray-900 no-underline hover:underline"
+    >
+      {{ user().name }}
+    </a>
+    @if (user().bio) {
+      <p class="text-xs text-gray-500 truncate">{{ user().bio }}</p>
+    }
+  </div>
+  @if (showFollowBtn()) {
+    <p-button
+      label="Follow"
+      severity="secondary"
+      [outlined]="true"
+      size="small"
+      (click)="onFollow()"
+    />
+  }
+</div>

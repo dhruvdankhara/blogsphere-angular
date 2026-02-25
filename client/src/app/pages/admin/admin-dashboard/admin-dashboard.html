@@ -1,0 +1,26 @@
+<div>
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+    <p class="text-sm text-gray-500 mt-1">Overview of your platform statistics</p>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center py-20">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      @for (card of statCards(); track card.label) {
+        <div class="bg-white border border-gray-200 rounded-lg p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center {{ card.color }}">
+            <i class="{{ card.icon }} text-xl"></i>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-gray-900">{{ card.value }}</p>
+            <p class="text-sm text-gray-500">{{ card.label }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

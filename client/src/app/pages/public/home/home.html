@@ -1,0 +1,79 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- Hero -->
+  <section class="py-12 md:py-20 border-b border-gray-200">
+    <h1 class="text-5xl md:text-7xl font-bold text-gray-900 mb-4 tracking-tight">Stay curious.</h1>
+    <p class="text-xl text-gray-500 max-w-lg mb-8">
+      Discover stories, thinking, and expertise from writers on any topic.
+    </p>
+    <a
+      routerLink="/explore"
+      class="inline-block px-6 py-3 bg-gray-900 text-white rounded-full text-sm font-medium hover:bg-gray-800 no-underline"
+    >
+      Start reading
+    </a>
+  </section>
+
+  <div class="flex gap-16 py-10">
+    <!-- Main Content -->
+    <div class="flex-1 min-w-0">
+      @if (loading()) {
+        <div class="flex justify-center py-10">
+          <p-progressSpinner strokeWidth="3" />
+        </div>
+      } @else {
+        <!-- Trending -->
+        @if (trendingBlogs().length) {
+          <section class="mb-10">
+            <div class="flex items-center gap-2 mb-4">
+              <i class="pi pi-bolt text-gray-400"></i>
+              <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Trending</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              @for (blog of trendingBlogs(); track blog._id; let i = $index) {
+                <a
+                  [routerLink]="['/blog', blog.slug]"
+                  class="no-underline flex gap-3 p-3 rounded-lg hover:bg-gray-50"
+                >
+                  <span class="text-3xl font-bold text-gray-200">0{{ i + 1 }}</span>
+                  <div>
+                    <p class="text-xs text-gray-500 mb-1">{{ blog.author?.name }}</p>
+                    <h3 class="text-sm font-bold text-gray-900 line-clamp-2">{{ blog.title }}</h3>
+                  </div>
+                </a>
+              }
+            </div>
+          </section>
+        }
+
+        <section>
+          @for (blog of blogs(); track blog._id) {
+            <app-blog-card [blog]="blog" />
+          }
+
+          @if (!blogs().length) {
+            <div class="text-center py-16">
+              <h3 class="text-xl text-gray-400">No stories yet</h3>
+              <p class="text-gray-400 mt-2">Be the first to write something</p>
+            </div>
+          }
+        </section>
+      }
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="hidden lg:block w-80 flex-shrink-0">
+      <div class="sticky top-24">
+        @if (tags().length) {
+          <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+            Discover more topics
+          </h3>
+          <div class="flex flex-wrap gap-2 mb-8">
+            @for (tag of tags(); track tag._id) {
+              <app-tag-chip [name]="tag.name" [slug]="tag.slug" />
+            }
+          </div>
+        }
+      </div>
+    </aside>
+  </div>
+</div>
