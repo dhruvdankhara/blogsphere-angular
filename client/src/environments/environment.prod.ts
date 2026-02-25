@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: '/api/v1',
+  apiUrl: 'https://blogsphere-angular.onrender.com/api/v1',
 };
