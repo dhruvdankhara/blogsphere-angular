@@ -26,15 +26,19 @@ export class PublicLayout {
   ngOnInit() {
     this.userMenuItems = [
       {
-        label: 'Dashboard',
+        label: 'Home',
         icon: 'pi pi-home',
-        command: () => this.router.navigate(['/dashboard']),
+        command: () => this.router.navigate(['/']),
       },
-      { label: 'My Blogs', icon: 'pi pi-file', command: () => this.router.navigate(['/my-blogs']) },
       {
-        label: 'Bookmarks',
+        label: 'Stories',
+        icon: 'pi pi-file-edit',
+        command: () => this.router.navigate(['/stories']),
+      },
+      {
+        label: 'Library',
         icon: 'pi pi-bookmark',
-        command: () => this.router.navigate(['/bookmarks']),
+        command: () => this.router.navigate(['/library']),
       },
       { label: 'Settings', icon: 'pi pi-cog', command: () => this.router.navigate(['/settings']) },
       { separator: true },

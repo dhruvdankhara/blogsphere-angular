@@ -1,41 +1,69 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal, HostListener } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
+import { UserService, FollowUser } from '../../core/services/user';
 import { Avatar } from 'primeng/avatar';
-import { Menu } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-user-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, Avatar, Menu],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, Avatar],
   templateUrl: './user-layout.html',
   styleUrl: './user-layout.css',
 })
-export class UserLayout {
+export class UserLayout implements OnInit {
   auth = inject(AuthService);
   router = inject(Router);
-  userMenuItems: MenuItem[] = [];
+  private userService = inject(UserService);
+
+  followingUsers = signal<FollowUser[]>([]);
+  showAvatarMenu = signal(false);
 
   navItems = [
-    { label: 'Home', icon: 'pi pi-home', route: '/dashboard' },
-    { label: 'Following', icon: 'pi pi-users', route: '/following' },
-    { label: 'Create', icon: 'pi pi-plus-circle', route: '/create' },
-    { label: 'My Blogs', icon: 'pi pi-file', route: '/my-blogs' },
-    { label: 'Bookmarks', icon: 'pi pi-bookmark', route: '/bookmarks' },
-    { label: 'Notifications', icon: 'pi pi-bell', route: '/notifications' },
-    { label: 'Settings', icon: 'pi pi-cog', route: '/settings' },
+    { label: 'Home', icon: 'fa-solid fa-house', route: '/' },
+    { label: 'Library', icon: 'fa-regular fa-bookmark', route: '/library' },
+    { label: 'Profile', icon: 'fa-regular fa-user', route: '/profile' },
+    { label: 'Stories', icon: 'fa-regular fa-file-lines', route: '/stories' },
+    { label: 'Stats', icon: 'fa-solid fa-chart-simple', route: '/stats' },
   ];
 
   ngOnInit() {
-    this.userMenuItems = [
-      {
-        label: 'Profile',
-        icon: 'pi pi-user',
-        command: () => this.router.navigate(['/profile', this.auth.user()?.username]),
-      },
-      { separator: true },
-      { label: 'Sign Out', icon: 'pi pi-sign-out', command: () => this.auth.logout().subscribe() },
-    ];
+    const username = this.auth.user()?.username;
+    if (username) {
+      this.navItems[2].route = `/profile/${username}`;
+      this.userService.getFollowing(username).subscribe({
+        next: (res) => this.followingUsers.set(res.data || []),
+      });
+    }
+  }
+
+  getProfileRoute(): string {
+    return `/profile/${this.auth.user()?.username}`;
+  }
+
+  toggleAvatarMenu(event: Event) {
+    event.stopPropagation();
+    this.showAvatarMenu.update((v) => !v);
+  }
+
+  closeAvatarMenu() {
+    this.showAvatarMenu.set(false);
+  }
+
+  @HostListener('document:click')
+  onDocumentClick() {
+    this.closeAvatarMenu();
+  }
+
+  getMaskedEmail(): string {
+    const email = this.auth.user()?.email || '';
+    const [local, domain] = email.split('@');
+    if (!local || !domain) return email;
+    const masked = local.substring(0, 2) + '\u2022'.repeat(Math.max(local.length - 2, 4));
+    return `${masked}@${domain}`;
+  }
+
+  logout() {
+    this.auth.logout().subscribe();
   }
 }

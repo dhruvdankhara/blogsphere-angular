@@ -7,7 +7,7 @@
       <!-- Search Bar -->
       <div class="hidden md:flex items-center flex-1 max-w-md mx-8 bg-white">
         <span class="p-input-icon-left w-full">
-          <i class="pi pi-search"></i>
+          <i class="fa-solid fa-magnifying-glass"></i>
           <input
             type="text"
             pInputText
@@ -30,7 +30,12 @@
 
         @if (auth.isLoggedIn()) {
           <a routerLink="/create">
-            <p-button icon="pi pi-pencil" label="Write" severity="secondary" [text]="true" />
+            <p-button
+              icon="fa-regular fa-pen-to-square"
+              label="Write"
+              severity="secondary"
+              [text]="true"
+            />
           </a>
           <div class="relative">
             <p-avatar

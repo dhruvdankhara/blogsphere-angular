@@ -41,7 +41,7 @@ export class Login {
     this.auth.login(payload).subscribe({
       next: () => {
         this.auth.getMe().subscribe(() => {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/']);
         });
       },
       error: (err) => {

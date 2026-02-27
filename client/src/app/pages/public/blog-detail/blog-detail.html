@@ -37,11 +37,13 @@
           (click)="toggleLike()"
           class="flex items-center gap-1 text-gray-500 hover:text-red-500 cursor-pointer bg-transparent border-0"
         >
-          <i [class]="blog()!.isLiked ? 'pi pi-heart-fill text-red-500' : 'pi pi-heart'"></i>
+          <i
+            [class]="blog()!.isLiked ? 'fa-solid fa-heart text-red-500' : 'fa-regular fa-heart'"
+          ></i>
           <span class="text-sm">{{ blog()!.likes }}</span>
         </button>
         <span class="flex items-center gap-1 text-gray-500">
-          <i class="pi pi-comment"></i>
+          <i class="fa-regular fa-comment"></i>
           <span class="text-sm">{{ blog()!.comments }}</span>
         </span>
       </div>
@@ -51,13 +53,15 @@
             (click)="toggleBookmark()"
             class="text-gray-500 hover:text-gray-900 cursor-pointer bg-transparent border-0"
           >
-            <i [class]="blog()!.isBookmarked ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'"></i>
+            <i
+              [class]="blog()!.isBookmarked ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'"
+            ></i>
           </button>
           <button
             (click)="showReportDialog = true"
             class="text-gray-400 hover:text-gray-600 cursor-pointer bg-transparent border-0"
           >
-            <i class="pi pi-flag"></i>
+            <i class="fa-regular fa-flag"></i>
           </button>
         }
       </div>
