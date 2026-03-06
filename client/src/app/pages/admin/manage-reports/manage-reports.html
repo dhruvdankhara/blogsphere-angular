@@ -39,7 +39,7 @@
           <th>Description</th>
           <th>Status</th>
           <th pSortableColumn="createdAt">Date <p-sortIcon field="createdAt" /></th>
-          <th>Actions</th>
+          <th style="min-width: 260px">Actions</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-report>
@@ -63,10 +63,22 @@
                 [style]="{ width: '140px' }"
               />
               <p-button
-                icon="pi pi-trash"
+                icon="fa fa-ban"
                 [text]="true"
                 severity="danger"
                 size="small"
+                [disabled]="!report.blog?.slug"
+                pTooltip="Remove blog post"
+                tooltipPosition="top"
+                (click)="removeBlog(report)"
+              />
+              <p-button
+                icon="fa fa-trash"
+                [text]="true"
+                severity="secondary"
+                size="small"
+                pTooltip="Delete report only"
+                tooltipPosition="top"
                 (click)="deleteReport(report)"
               />
             </div>

@@ -5,7 +5,7 @@
       <a routerLink="/" class="text-2xl font-bold text-gray-900 no-underline"> BlogSphere </a>
 
       <!-- Search Bar -->
-      <div class="hidden md:flex items-center flex-1 max-w-md mx-8 bg-white">
+      <!-- <div class="hidden md:flex items-center flex-1 max-w-md mx-8 bg-white">
         <span class="p-input-icon-left w-full">
           <i class="fa-solid fa-magnifying-glass"></i>
           <input
@@ -17,7 +17,7 @@
             class="w-full"
           />
         </span>
-      </div>
+      </div> -->
 
       <!-- Right Actions -->
       <div class="flex items-center gap-3">
@@ -29,14 +29,14 @@
         </a>
 
         @if (auth.isLoggedIn()) {
-          <a routerLink="/create">
+          <!-- <a routerLink="/create">
             <p-button
               icon="fa-regular fa-pen-to-square"
               label="Write"
               severity="secondary"
               [text]="true"
             />
-          </a>
+          </a> -->
           <div class="relative">
             <p-avatar
               [image]="auth.user()?.avatar || ''"

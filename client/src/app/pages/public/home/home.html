@@ -22,30 +22,12 @@
         </div>
       } @else {
         <!-- Trending -->
-        @if (trendingBlogs().length) {
-          <section class="mb-10">
-            <div class="flex items-center gap-2 mb-4">
-              <i class="pi pi-bolt text-gray-400"></i>
-              <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Trending</h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              @for (blog of trendingBlogs(); track blog._id; let i = $index) {
-                <a
-                  [routerLink]="['/blog', blog.slug]"
-                  class="no-underline flex gap-3 p-3 rounded-lg hover:bg-gray-50"
-                >
-                  <span class="text-3xl font-bold text-gray-200">0{{ i + 1 }}</span>
-                  <div>
-                    <p class="text-xs text-gray-500 mb-1">{{ blog.author?.name }}</p>
-                    <h3 class="text-sm font-bold text-gray-900 line-clamp-2">{{ blog.title }}</h3>
-                  </div>
-                </a>
-              }
-            </div>
-          </section>
-        }
+        <section class="mb-10">
+          <div class="flex items-center gap-2 mb-4">
+            <i class="pi pi-bolt text-gray-400"></i>
+            <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Trending</h2>
+          </div>
 
-        <section>
           @for (blog of blogs(); track blog._id) {
             <app-blog-card [blog]="blog" />
           }

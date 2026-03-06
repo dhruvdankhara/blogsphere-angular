@@ -21,16 +21,19 @@ export class UserLayout implements OnInit {
 
   navItems = [
     { label: 'Home', icon: 'fa-solid fa-house', route: '/' },
-    { label: 'Library', icon: 'fa-regular fa-bookmark', route: '/library' },
+    { label: 'Search', icon: 'fa-solid fa-magnifying-glass', route: '/search' },
+    { label: 'Explore', icon: 'fa-solid fa-compass', route: '/explore' },
+    { label: 'Bookmarks', icon: 'fa-regular fa-bookmark', route: '/library' },
     { label: 'Profile', icon: 'fa-regular fa-user', route: '/profile' },
     { label: 'Stories', icon: 'fa-regular fa-file-lines', route: '/stories' },
     { label: 'Stats', icon: 'fa-solid fa-chart-simple', route: '/stats' },
+    { label: 'Settings', icon: 'fa-solid fa-gear', route: '/settings' },
   ];
 
   ngOnInit() {
     const username = this.auth.user()?.username;
     if (username) {
-      this.navItems[2].route = `/profile/${username}`;
+      this.navItems[4].route = `/profile/${username}`;
       this.userService.getFollowing(username).subscribe({
         next: (res) => this.followingUsers.set(res.data || []),
       });
