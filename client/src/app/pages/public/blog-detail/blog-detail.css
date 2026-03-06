@@ -51,3 +51,7 @@
   border-radius: 4px;
   font-size: 0.9em;
 }
+
+.ql-align-center {
+  text-align: center;
+}

@@ -4,6 +4,7 @@ import Comment from "../models/comment.model.js";
 import Like from "../models/like.model.js";
 import Bookmark from "../models/bookmark.model.js";
 import Report from "../models/report.model.js";
+import Tag from "../models/tag.model.js";
 import { createBlogPostSchema } from "../schemas/blog.schema.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -82,11 +83,31 @@ const parseTags = (tags) => {
   }
 };
 
+// helper: resolve an array of tag names to ObjectId refs (find-or-create)
+const resolveTagNames = async (tagNames) => {
+  if (!tagNames || !tagNames.length) return [];
+  const ids = [];
+  for (const raw of tagNames) {
+    const name = raw
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "");
+    if (!name) continue;
+    const slug = name;
+    let tag = await Tag.findOne({ name });
+    if (!tag) {
+      tag = await Tag.create({ name, slug });
+    }
+    ids.push(tag._id);
+  }
+  return ids;
+};
+
 export const createBlogPost = asyncHandler(async (req, res) => {
   const user = req.user;
   const file = req.file;
   const { title, content, slug, featureImageUrl, isPublic, isDraft } = req.body;
-  const tags = parseTags(req.body.tags);
+  const rawTags = parseTags(req.body.tags);
   const { category } = req.body;
 
   await createBlogPostSchema.validate({ title, content, slug });
@@ -95,6 +116,9 @@ export const createBlogPost = asyncHandler(async (req, res) => {
   if (existingBlog) {
     throw new ApiError(400, "Blog post with this slug already exists");
   }
+
+  // Resolve tag names to ObjectIds (find or create)
+  const tags = await resolveTagNames(rawTags);
 
   let imageUrl = "";
   if (file) {
@@ -199,7 +223,8 @@ export const editBlogPost = asyncHandler(async (req, res) => {
   if (category !== undefined) blog.category = category || null;
 
   if (req.body.tags !== undefined) {
-    blog.tags = parseTags(req.body.tags);
+    const rawTags = parseTags(req.body.tags);
+    blog.tags = await resolveTagNames(rawTags);
   }
 
   await blog.save();

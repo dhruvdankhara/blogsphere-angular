@@ -121,6 +121,36 @@ export interface PaginatedResponse<T> {
   limit: number;
 }
 
+export interface PostViewStat {
+  title: string;
+  slug: string;
+  views: number;
+}
+
+export interface PostLikeStat {
+  title: string;
+  slug: string;
+  likes: number;
+}
+
+export interface MonthStat {
+  year: number;
+  month: number;
+  count: number;
+}
+
+export interface UserDetailedStats {
+  totalPosts: number;
+  totalViews: number;
+  totalLikes: number;
+  totalComments: number;
+  followers: number;
+  following: number;
+  topPostsByViews: PostViewStat[];
+  topPostsByLikes: PostLikeStat[];
+  postsPerMonth: MonthStat[];
+}
+
 export interface DashboardStats {
   totalUsers: number;
   totalBlogs: number;

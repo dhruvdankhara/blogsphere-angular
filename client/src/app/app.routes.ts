@@ -107,10 +107,10 @@ export const routes: Routes = [
         path: 'explore',
         loadComponent: () => import('./pages/public/explore/explore').then((m) => m.Explore),
       },
-      // {
-      //   path: 'search',
-      //   loadComponent: () => import('./pages/public/search/search').then((m) => m.Search),
-      // },
+      {
+        path: 'search',
+        loadComponent: () => import('./pages/public/search/search').then((m) => m.Search),
+      },
       {
         path: 'blog/:slug',
         loadComponent: () =>

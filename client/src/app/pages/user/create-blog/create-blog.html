@@ -111,16 +111,59 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1">Tags</label>
-            <p-multiselect
-              [options]="tags()"
-              [(ngModel)]="selectedTags"
-              name="tags"
-              optionLabel="name"
-              optionValue="_id"
-              placeholder="Select tags"
-              styleClass="w-full"
-            />
+            <label class="block text-sm font-medium text-gray-600 mb-1">
+              Tags
+              <span class="text-xs text-gray-400 font-normal ml-1"
+                >({{ selectedTags.length }}/{{ MAX_TAGS }})</span
+              >
+            </label>
+            <div class="tag-input-container" (click)="tagInputRef?.nativeElement?.focus()">
+              @for (tag of selectedTags; track tag) {
+                <span class="tag-chip">
+                  #{{ tag }}
+                  <button
+                    type="button"
+                    class="tag-remove"
+                    (click)="removeTag(tag); $event.stopPropagation()"
+                  >
+                    <i class="fa fa-times"></i>
+                  </button>
+                </span>
+              }
+              @if (selectedTags.length < MAX_TAGS) {
+                <input
+                  #tagInputEl
+                  type="text"
+                  [ngModel]="tagInput"
+                  [ngModelOptions]="{ standalone: true }"
+                  (input)="onTagInput($event)"
+                  (keydown)="onTagKeydown($event)"
+                  (blur)="onTagInputBlur()"
+                  (focus)="onTagInputFocus()"
+                  class="tag-text-input"
+                  [placeholder]="
+                    selectedTags.length === 0 ? 'Add up to 5 tags...' : 'Add another...'
+                  "
+                  autocomplete="off"
+                />
+              }
+            </div>
+            @if (showSuggestions && suggestions().length) {
+              <div class="tag-suggestions">
+                @for (s of suggestions(); track s._id) {
+                  <button
+                    type="button"
+                    class="tag-suggestion-item"
+                    (mousedown)="selectSuggestion(s)"
+                  >
+                    #{{ s.name }}
+                  </button>
+                }
+              </div>
+            }
+            <p class="text-xs text-gray-400 mt-1">
+              Only letters and numbers. Press space to add tag.
+            </p>
           </div>
         </div>
 

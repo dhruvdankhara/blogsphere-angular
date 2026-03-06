@@ -16,6 +16,16 @@ export class TagService {
     return this.http.get<ApiResponse<Tag[]>>(this.apiUrl);
   }
 
+  search(query: string): Observable<ApiResponse<Tag[]>> {
+    return this.http.get<ApiResponse<Tag[]>>(`${this.apiUrl}/search`, {
+      params: { q: query },
+    });
+  }
+
+  findOrCreate(name: string): Observable<ApiResponse<Tag>> {
+    return this.http.post<ApiResponse<Tag>>(`${this.apiUrl}/find-or-create`, { name });
+  }
+
   getById(id: string): Observable<ApiResponse<Tag>> {
     return this.http.get<ApiResponse<Tag>>(`${this.apiUrl}/${id}`);
   }

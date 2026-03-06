@@ -5,6 +5,8 @@ import { ApiError } from "../utils/ApiError.js";
 import Blog from "../models/blog.model.js";
 import User from "../models/user.model.js";
 import Follow from "../models/follow.model.js";
+import Like from "../models/like.model.js";
+import Comment from "../models/comment.model.js";
 
 export const getUserProfile = asyncHandler(async (req, res) => {
   const username = req.params.username;
@@ -286,6 +288,122 @@ export const getFollowingList = asyncHandler(async (req, res) => {
     200,
     following,
     "Following list fetched successfully"
+  );
+  return res.status(response.statusCode).json(response);
+});
+
+// GET /:username/detailed-stats - rich analytics for the user's own stats page
+export const getDetailedStats = asyncHandler(async (req, res) => {
+  const { username } = req.params;
+
+  const user = await User.findOne({ username }).select(
+    "_id username name avatar bio"
+  );
+  if (!user) throw new ApiError(404, "User not found");
+
+  // Fetch this user's published posts
+  const userBlogs = await Blog.find({
+    userId: user._id,
+    isPublic: true,
+    isDraft: false,
+  }).select("_id title slug visits createdAt");
+
+  const blogIds = userBlogs.map((b) => b._id);
+  const totalPosts = userBlogs.length;
+  const totalViews = userBlogs.reduce((sum, b) => sum + (b.visits || 0), 0);
+
+  const [followersCount, followingCount, totalLikes, totalComments] =
+    await Promise.all([
+      Follow.countDocuments({ following: user._id }),
+      Follow.countDocuments({ follower: user._id }),
+      Like.countDocuments({ blogId: { $in: blogIds } }),
+      Comment.countDocuments({ blogId: { $in: blogIds } }),
+    ]);
+
+  // Top 5 posts by views
+  const topPostsByViews = [...userBlogs]
+    .sort((a, b) => (b.visits || 0) - (a.visits || 0))
+    .slice(0, 5)
+    .map((b) => ({ title: b.title, slug: b.slug, views: b.visits || 0 }));
+
+  // Top 5 posts by likes (aggregated from Like collection)
+  const topPostsByLikes =
+    blogIds.length > 0
+      ? await Like.aggregate([
+          { $match: { blogId: { $in: blogIds } } },
+          { $group: { _id: "$blogId", likes: { $sum: 1 } } },
+          { $sort: { likes: -1 } },
+          { $limit: 5 },
+          {
+            $lookup: {
+              from: "blogs",
+              localField: "_id",
+              foreignField: "_id",
+              as: "blog",
+              pipeline: [{ $project: { title: 1, slug: 1 } }],
+            },
+          },
+          { $addFields: { blog: { $first: "$blog" } } },
+          {
+            $project: {
+              _id: 0,
+              title: "$blog.title",
+              slug: "$blog.slug",
+              likes: 1,
+            },
+          },
+        ])
+      : [];
+
+  // Posts published per month – last 12 months
+  const twelveMonthsAgo = new Date();
+  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 11);
+  twelveMonthsAgo.setDate(1);
+  twelveMonthsAgo.setHours(0, 0, 0, 0);
+
+  const postsPerMonth = await Blog.aggregate([
+    {
+      $match: {
+        userId: user._id,
+        isPublic: true,
+        isDraft: false,
+        createdAt: { $gte: twelveMonthsAgo },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+        },
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { "_id.year": 1, "_id.month": 1 } },
+    {
+      $project: {
+        _id: 0,
+        year: "$_id.year",
+        month: "$_id.month",
+        count: 1,
+      },
+    },
+  ]);
+
+  const response = new ApiResponse(
+    200,
+    {
+      totalPosts,
+      totalViews,
+      totalLikes,
+      totalComments,
+      followers: followersCount,
+      following: followingCount,
+      topPostsByViews,
+      topPostsByLikes,
+      postsPerMonth,
+    },
+    "Detailed stats fetched successfully"
   );
   return res.status(response.statusCode).json(response);
 });

@@ -10,6 +10,42 @@ export const getAllTags = asyncHandler(async (req, res) => {
   return res.status(response.statusCode).json(response);
 });
 
+// GET /api/v1/tags/search?q=term - search tags by name
+export const searchTags = asyncHandler(async (req, res) => {
+  const q = (req.query.q || "").trim();
+  if (!q) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, [], "No query provided"));
+  }
+  const tags = await Tag.find({
+    name: { $regex: q, $options: "i" },
+  })
+    .sort({ name: 1 })
+    .limit(10);
+  const response = new ApiResponse(200, tags, "Tags searched successfully");
+  return res.status(response.statusCode).json(response);
+});
+
+// POST /api/v1/tags/find-or-create - find existing tag or create new one
+export const findOrCreateTag = asyncHandler(async (req, res) => {
+  const { name } = req.body;
+  if (!name || !name.trim()) {
+    throw new ApiError(400, "Tag name is required");
+  }
+
+  const normalised = name.trim().toLowerCase();
+  const slug = normalised.replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+  let tag = await Tag.findOne({ name: normalised });
+  if (!tag) {
+    tag = await Tag.create({ name: normalised, slug });
+  }
+
+  const response = new ApiResponse(200, tag, "Tag ready");
+  return res.status(response.statusCode).json(response);
+});
+
 // GET /api/v1/tags/:tagId - get single tag
 export const getTagById = asyncHandler(async (req, res) => {
   const { tagId } = req.params;

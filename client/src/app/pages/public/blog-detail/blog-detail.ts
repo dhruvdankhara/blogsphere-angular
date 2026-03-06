@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, ElementRef, effect } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -18,6 +18,8 @@ import { MessageService } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 import { Select } from 'primeng/select';
 import { ReportService } from '../../../core/services/report';
+import { DomSanitizer } from '@angular/platform-browser';
+import hljs from 'highlight.js';
 
 @Component({
   selector: 'app-blog-detail',
@@ -45,6 +47,8 @@ export class BlogDetail implements OnInit {
   private reportService = inject(ReportService);
   auth = inject(AuthService);
   private message = inject(MessageService);
+  private sanitizer = inject(DomSanitizer);
+  private el = inject(ElementRef);
 
   blog = signal<BlogDetailModel | null>(null);
   comments = signal<Comment[]>([]);
@@ -175,5 +179,18 @@ export class BlogDetail implements OnInit {
           });
         },
       });
+  }
+
+  sanitizedContent = computed(() => this.sanitizer.bypassSecurityTrustHtml(this.blog()!.content));
+
+  constructor() {
+    effect(() => {
+      const _ = this.sanitizedContent();
+      setTimeout(() => {
+        this.el.nativeElement.querySelectorAll('pre').forEach((block: HTMLElement) => {
+          hljs.highlightElement(block);
+        });
+      }, 0);
+    });
   }
 }

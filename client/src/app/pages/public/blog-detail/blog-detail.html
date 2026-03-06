@@ -78,8 +78,8 @@
 
     <!-- Content -->
     <div
-      class="prose prose-lg max-w-none mb-10 text-gray-800 leading-relaxed"
-      [innerHTML]="blog()!.content"
+      class="prose prose-lg max-w-fit mb-10 text-gray-800 leading-relaxed text-justify"
+      [innerHTML]="sanitizedContent()"
     ></div>
 
     <!-- Tags -->

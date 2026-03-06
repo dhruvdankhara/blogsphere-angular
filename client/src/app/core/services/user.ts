@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApiResponse, UserProfile, UserStats, Blog } from '../models/index';
+import { ApiResponse, UserProfile, UserStats, UserDetailedStats, Blog } from '../models/index';
 
 export interface FollowUser {
   _id: string;
@@ -26,6 +26,12 @@ export class UserService {
 
   getStats(username: string): Observable<ApiResponse<UserStats>> {
     return this.http.get<ApiResponse<UserStats>>(`${this.apiUrl}/${username}/stats`);
+  }
+
+  getDetailedStats(username: string): Observable<ApiResponse<UserDetailedStats>> {
+    return this.http.get<ApiResponse<UserDetailedStats>>(
+      `${this.apiUrl}/${username}/detailed-stats`,
+    );
   }
 
   getUserPosts(username: string): Observable<ApiResponse<Blog[]>> {

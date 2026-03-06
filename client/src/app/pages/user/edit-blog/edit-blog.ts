@@ -1,19 +1,20 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { BlogService } from '../../../core/services/blog';
 import { TagService } from '../../../core/services/tag';
 import { CategoryService } from '../../../core/services/category';
-import { Tag, Category, BlogDetail } from '../../../core/models/index';
+import { Tag, Category } from '../../../core/models/index';
 import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { Editor } from 'primeng/editor';
 import { Select } from 'primeng/select';
-import { MultiSelect } from 'primeng/multiselect';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { FileUpload } from 'primeng/fileupload';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { MessageService } from 'primeng/api';
+import { Subject } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-blog',
@@ -24,7 +25,6 @@ import { MessageService } from 'primeng/api';
     Button,
     Editor,
     Select,
-    MultiSelect,
     ToggleSwitch,
     FileUpload,
     ProgressSpinner,
@@ -40,6 +40,8 @@ export class EditBlog implements OnInit {
   private router = inject(Router);
   private message = inject(MessageService);
 
+  @ViewChild('tagInputEl') tagInputRef!: ElementRef<HTMLInputElement>;
+
   originalSlug = '';
   title = '';
   slug = '';
@@ -51,17 +53,36 @@ export class EditBlog implements OnInit {
   featureImageFile: File | null = null;
   featureImagePreview = '';
 
-  tags = signal<Tag[]>([]);
+  tagInput = '';
+  suggestions = signal<Tag[]>([]);
+  showSuggestions = false;
   categories = signal<Category[]>([]);
   loading = signal(true);
   saving = signal(false);
 
+  readonly MAX_TAGS = 5;
+
+  private searchSubject = new Subject<string>();
+
   ngOnInit() {
-    this.tagService.getAll().subscribe({ next: (res) => this.tags.set(res.data || []) });
     this.categoryService.getAll().subscribe({ next: (res) => this.categories.set(res.data || []) });
 
+    this.searchSubject
+      .pipe(
+        debounceTime(300),
+        switchMap((q) => this.tagService.search(q)),
+      )
+      .subscribe({
+        next: (res) => {
+          const existing = res.data || [];
+          const filtered = existing.filter((t) => !this.selectedTags.includes(t.name));
+          this.suggestions.set(filtered);
+          this.showSuggestions = filtered.length > 0;
+        },
+      });
+
     this.route.params.subscribe((params) => {
-      this.originalSlug = params['blogId'];
+      this.originalSlug = params['slug'];
       this.blogService.getBySlug(this.originalSlug).subscribe({
         next: (res) => {
           const blog = res.data;
@@ -71,13 +92,95 @@ export class EditBlog implements OnInit {
           this.isDraft = blog.isDraft;
           this.isPublic = blog.isPublic;
           this.selectedCategory = blog.category?._id || null;
-          this.selectedTags = blog.tags?.map((t) => t._id) || [];
+          this.selectedTags = (blog.tags || []).map((t) => t.name);
           this.featureImagePreview = blog.featureImage || '';
           this.loading.set(false);
         },
         error: () => this.loading.set(false),
       });
     });
+  }
+
+  onTagInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const cleaned = input.value.replace(/[^a-z0-9]/gi, '').toLowerCase();
+    this.tagInput = cleaned;
+    input.value = cleaned;
+
+    if (cleaned.length >= 1) {
+      this.searchSubject.next(cleaned);
+    } else {
+      this.suggestions.set([]);
+      this.showSuggestions = false;
+    }
+  }
+
+  onTagInputFocus() {
+    if (this.tagInput.length >= 1) {
+      this.searchSubject.next(this.tagInput);
+    }
+  }
+
+  onTagKeydown(event: KeyboardEvent) {
+    if (event.key === ' ' || event.key === 'Enter' || event.key === ',') {
+      event.preventDefault();
+      this.addCurrentTag();
+    } else if (event.key === 'Backspace' && !this.tagInput && this.selectedTags.length) {
+      this.selectedTags = this.selectedTags.slice(0, -1);
+    }
+  }
+
+  addCurrentTag() {
+    const name = this.tagInput
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '');
+    if (!name) return;
+    if (this.selectedTags.length >= this.MAX_TAGS) {
+      this.message.add({
+        severity: 'warn',
+        summary: 'Limit reached',
+        detail: `Maximum ${this.MAX_TAGS} tags allowed`,
+      });
+      return;
+    }
+    if (this.selectedTags.includes(name)) {
+      this.tagInput = '';
+      this.showSuggestions = false;
+      return;
+    }
+    this.selectedTags = [...this.selectedTags, name];
+    this.tagInput = '';
+    this.suggestions.set([]);
+    this.showSuggestions = false;
+  }
+
+  selectSuggestion(tag: Tag) {
+    if (this.selectedTags.length >= this.MAX_TAGS) {
+      this.message.add({
+        severity: 'warn',
+        summary: 'Limit reached',
+        detail: `Maximum ${this.MAX_TAGS} tags allowed`,
+      });
+      return;
+    }
+    if (!this.selectedTags.includes(tag.name)) {
+      this.selectedTags = [...this.selectedTags, tag.name];
+    }
+    this.tagInput = '';
+    this.suggestions.set([]);
+    this.showSuggestions = false;
+    this.tagInputRef?.nativeElement?.focus();
+  }
+
+  removeTag(name: string) {
+    this.selectedTags = this.selectedTags.filter((t) => t !== name);
+  }
+
+  onTagInputBlur() {
+    setTimeout(() => {
+      this.showSuggestions = false;
+    }, 200);
   }
 
   onImageSelect(event: any) {
@@ -106,6 +209,7 @@ export class EditBlog implements OnInit {
     }
 
     this.saving.set(true);
+
     const formData = new FormData();
     formData.append('title', this.title);
     formData.append('slug', this.slug);
