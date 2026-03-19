@@ -1,0 +1,33 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 capitalize">{{ slug() }}</h1>
+    <p class="text-gray-500 mt-1">Stories tagged with this topic</p>
+  </div>
+
+  @if (relatedTags().length) {
+    <div class="mb-8">
+      <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Related Tags</h3>
+      <div class="flex flex-wrap gap-2">
+        @for (tag of relatedTags(); track tag._id) {
+          <app-tag-chip [name]="tag.name" [slug]="tag.slug" />
+        }
+      </div>
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="flex justify-center py-10">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else {
+    @for (blog of blogs(); track blog._id) {
+      <app-blog-card [blog]="blog" />
+    }
+    @if (!blogs().length) {
+      <div class="text-center py-16">
+        <i class="pi pi-tag text-4xl text-gray-300 mb-4"></i>
+        <p class="text-gray-400">No stories with this tag yet</p>
+      </div>
+    }
+  }
+</div>

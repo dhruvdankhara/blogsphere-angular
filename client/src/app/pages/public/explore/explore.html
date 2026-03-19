@@ -1,0 +1,140 @@
+<div class="explore-page">
+  <section class="explore-shell">
+    <div class="explore-hero">
+      <div class="explore-hero__copy">
+        <span class="explore-kicker">Curated discovery</span>
+        <h1 class="explore-title">
+          Find the stories,
+          <span>topics, and voices</span>
+          worth staying with.
+        </h1>
+        <p class="explore-subtitle">
+          Dive into fresh writing across BlogSphere with a calmer, more editorial browse
+          experience.
+        </p>
+
+        <div class="explore-stats" aria-label="Explore overview">
+          <div class="explore-stat">
+            <strong>{{ blogs().length }}</strong>
+            <span>Stories</span>
+          </div>
+          <div class="explore-stat">
+            <strong>{{ categories().length }}</strong>
+            <span>Collections</span>
+          </div>
+          <div class="explore-stat">
+            <strong>{{ tags().length }}</strong>
+            <span>Topics</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="explore-hero__panels">
+        <div class="hero-panel hero-panel--dark">
+          <p class="hero-panel__eyebrow">Now browsing</p>
+          <h2>Editorial picks and deep dives for curious readers.</h2>
+          <p>
+            Move from broad themes into standout stories without the usual clutter.
+          </p>
+        </div>
+
+        @if (featuredStories().length) {
+          <div class="hero-panel hero-panel--light">
+            <p class="hero-panel__eyebrow">Fresh reads</p>
+            @for (story of featuredStories(); track story._id; let i = $index) {
+              <a [routerLink]="['/blog', story.slug]" class="hero-story no-underline">
+                <span class="hero-story__index">0{{ i + 1 }}</span>
+                <div>
+                  <h3>{{ story.title }}</h3>
+                  <p>{{ story.author.name }}</p>
+                </div>
+              </a>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (topTags().length) {
+      <section class="explore-section">
+        <div class="section-heading">
+          <div>
+            <span class="section-heading__kicker">Trending now</span>
+            <h2>Topics gaining attention</h2>
+          </div>
+          <p>Start with the conversations readers are already following.</p>
+        </div>
+
+        <div class="topic-cloud">
+          @for (tag of topTags(); track tag._id) {
+            <app-tag-chip [name]="tag.name" [slug]="tag.slug" />
+          }
+        </div>
+      </section>
+    }
+
+    @if (spotlightCategories().length) {
+      <section class="explore-section">
+        <div class="section-heading">
+          <div>
+            <span class="section-heading__kicker">Browse by collection</span>
+            <h2>Category spotlight</h2>
+          </div>
+          <p>Distinct spaces to jump into whatever mood or subject fits.</p>
+        </div>
+
+        <div class="category-grid">
+          @for (cat of spotlightCategories(); track cat._id; let i = $index) {
+            <a [routerLink]="['/category', cat.slug]" class="category-card no-underline group">
+              <div class="category-card__media">
+                @if (cat.featureImage) {
+                  <img
+                    [src]="cat.featureImage"
+                    [alt]="cat.name"
+                    class="category-card__image"
+                  />
+                } @else {
+                  <div class="category-card__fallback"></div>
+                }
+                <span class="category-card__index">0{{ i + 1 }}</span>
+              </div>
+
+              <div class="category-card__body">
+                <h3>{{ cat.name }}</h3>
+                <p class="line-clamp-2">
+                  {{ cat.description || 'Explore thoughtful writing curated around this theme.' }}
+                </p>
+                <span class="category-card__link">Explore collection</span>
+              </div>
+            </a>
+          }
+        </div>
+      </section>
+    }
+
+    <section class="explore-section">
+      <div class="section-heading">
+        <div>
+          <span class="section-heading__kicker">Recommended reading</span>
+          <h2>Stories worth your next scroll</h2>
+        </div>
+        <p>A cleaner reading rail with room for headlines, authors, and context.</p>
+      </div>
+
+      <div class="reading-panel">
+        @if (loading()) {
+          <div class="loading-state">
+            <p-progressSpinner strokeWidth="3" />
+          </div>
+        } @else {
+          @for (blog of blogs(); track blog._id) {
+            <app-blog-card [blog]="blog" />
+          }
+          @if (!blogs().length) {
+            <p class="empty-state">No stories to explore yet.</p>
+          }
+        }
+      </div>
+    </section>
+  </section>
+</div>

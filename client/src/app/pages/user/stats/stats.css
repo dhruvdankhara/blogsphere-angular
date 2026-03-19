@@ -1,0 +1,59 @@
+:host {
+  display: block;
+}
+
+/* Summary cards */
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1.25rem 0.75rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.stat-icon {
+  font-size: 1.35rem;
+  margin-bottom: 0.1rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Chart cards */
+.chart-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.chart-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1.25rem;
+}
+
+.chart-area {
+  height: 260px;
+}
+
+.chart-area p-chart,
+.chart-area ::ng-deep canvas {
+  height: 100% !important;
+}

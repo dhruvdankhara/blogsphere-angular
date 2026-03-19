@@ -1,0 +1,164 @@
+<div>
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">My Stories</h1>
+    <a routerLink="/create">
+      <p-button icon="pi pi-plus" label="New Story" severity="contrast" />
+    </a>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center py-10">
+      <p-progressspinner strokeWidth="3" />
+    </div>
+  } @else {
+    <p-tabs [value]="0">
+      <p-tablist>
+        <p-tab [value]="0">Published ({{ published().length }})</p-tab>
+        <p-tab [value]="1">Drafts ({{ drafts().length }})</p-tab>
+      </p-tablist>
+      <p-tabpanels>
+        <!-- Published Tab -->
+        <p-tabpanel [value]="0">
+          @for (blog of published(); track blog._id) {
+            <div class="flex gap-4 py-5 border-b border-gray-100 group">
+              <!-- Text content -->
+              <div class="flex-1 min-w-0 flex flex-col justify-between gap-2">
+                <div>
+                  <a
+                    [routerLink]="['/blog', blog.slug]"
+                    class="text-lg font-bold text-gray-900 no-underline hover:text-gray-600 line-clamp-2 leading-snug"
+                  >
+                    {{ blog.title }}
+                  </a>
+                  <div class="flex flex-wrap items-center gap-2 mt-1.5">
+                    @if (blog.category) {
+                      <span
+                        class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600"
+                      >
+                        {{ blog.category.name }}
+                      </span>
+                    }
+                    @if (!blog.isPublic) {
+                      <span
+                        class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-600"
+                      >
+                        Unlisted
+                      </span>
+                    }
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <p class="text-sm text-gray-400">
+                    {{ blog.createdAt | date: 'MMM d, y' }}
+                    &middot;
+                    <i class="pi pi-eye text-xs"></i> {{ blog.visits }} views
+                  </p>
+                  <div class="flex items-center gap-1">
+                    <a [routerLink]="['/edit', blog.slug]">
+                      <p-button
+                        icon="pi pi-pencil"
+                        label="Edit"
+                        size="small"
+                        severity="secondary"
+                        [outlined]="true"
+                      />
+                    </a>
+                    <p-button
+                      icon="pi pi-trash"
+                      [text]="true"
+                      size="small"
+                      severity="danger"
+                      (click)="deleteBlog(blog.slug)"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Feature image -->
+              @if (blog.featureImage) {
+                <a [routerLink]="['/blog', blog.slug]" class="flex-shrink-0 self-start">
+                  <img
+                    [src]="blog.featureImage"
+                    [alt]="blog.title"
+                    class="w-24 h-20 sm:w-32 sm:h-24 object-cover rounded-lg border border-gray-100"
+                  />
+                </a>
+              }
+            </div>
+          }
+          @if (!published().length) {
+            <div class="flex flex-col items-center py-16 text-center text-gray-400">
+              <i class="pi pi-file text-4xl mb-3 text-gray-300"></i>
+              <p class="font-medium">No published stories yet</p>
+              <p class="text-sm mt-1">Write your first story and share it with the world.</p>
+            </div>
+          }
+        </p-tabpanel>
+
+        <!-- Drafts Tab -->
+        <p-tabpanel [value]="1">
+          @for (blog of drafts(); track blog._id) {
+            <div class="flex gap-4 py-5 border-b border-gray-100 group">
+              <!-- Text content -->
+              <div class="flex-1 min-w-0 flex flex-col justify-between gap-2">
+                <div>
+                  <span class="text-lg font-bold text-gray-700 line-clamp-2 leading-snug">
+                    {{ blog.title }}
+                  </span>
+                  <span
+                    class="inline-flex items-center ml-2 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700"
+                  >
+                    Draft
+                  </span>
+                </div>
+
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <p class="text-sm text-gray-400">
+                    Last edited {{ blog.updatedAt | date: 'MMM d, y' }}
+                  </p>
+                  <div class="flex items-center gap-1">
+                    <a [routerLink]="['/edit', blog.slug]">
+                      <p-button
+                        icon="pi pi-pencil"
+                        label="Continue editing"
+                        size="small"
+                        severity="secondary"
+                        [outlined]="true"
+                      />
+                    </a>
+                    <p-button
+                      icon="pi pi-trash"
+                      [text]="true"
+                      size="small"
+                      severity="danger"
+                      (click)="deleteBlog(blog.slug)"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Feature image -->
+              @if (blog.featureImage) {
+                <div class="flex-shrink-0 self-start">
+                  <img
+                    [src]="blog.featureImage"
+                    [alt]="blog.title"
+                    class="w-24 h-20 sm:w-32 sm:h-24 object-cover rounded-lg border border-gray-100 opacity-70"
+                  />
+                </div>
+              }
+            </div>
+          }
+          @if (!drafts().length) {
+            <div class="flex flex-col items-center py-16 text-center text-gray-400">
+              <i class="pi pi-file-edit text-4xl mb-3 text-gray-300"></i>
+              <p class="font-medium">No drafts</p>
+              <p class="text-sm mt-1">Stories you save as drafts will appear here.</p>
+            </div>
+          }
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  }
+</div>

@@ -1,0 +1,101 @@
+<!-- Loading -->
+@if (loading()) {
+  <div class="flex items-center justify-center py-32">
+    <p-progressspinner strokeWidth="3" styleClass="w-12 h-12" />
+  </div>
+}
+
+<!-- Error -->
+@if (!loading() && error()) {
+  <div class="flex flex-col items-center justify-center py-24 text-center">
+    <i class="fa-solid fa-triangle-exclamation text-5xl text-red-400 mb-4"></i>
+    <p class="text-gray-500">Failed to load stats. Please try again later.</p>
+  </div>
+}
+
+<!-- Content -->
+@if (!loading() && !error() && stats(); as s) {
+  <div class="max-w-5xl mx-auto px-4 py-8 space-y-10">
+    <!-- Page heading -->
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Your Stats</h1>
+      <p class="text-sm text-gray-500 mt-1">An overview of your content performance.</p>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div class="stat-card">
+        <i class="fa-solid fa-file-lines stat-icon text-indigo-500"></i>
+        <span class="stat-value">{{ s.totalPosts }}</span>
+        <span class="stat-label">Posts</span>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-eye stat-icon text-sky-500"></i>
+        <span class="stat-value">{{ s.totalViews }}</span>
+        <span class="stat-label">Views</span>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-heart stat-icon text-pink-500"></i>
+        <span class="stat-value">{{ s.totalLikes }}</span>
+        <span class="stat-label">Likes</span>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-comment stat-icon text-amber-500"></i>
+        <span class="stat-value">{{ s.totalComments }}</span>
+        <span class="stat-label">Comments</span>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-user-plus stat-icon text-green-500"></i>
+        <span class="stat-value">{{ s.followers }}</span>
+        <span class="stat-label">Followers</span>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-users stat-icon text-violet-500"></i>
+        <span class="stat-value">{{ s.following }}</span>
+        <span class="stat-label">Following</span>
+      </div>
+    </div>
+
+    <!-- Posts per month (line chart) -->
+    <div class="chart-card">
+      <h2 class="chart-title">Posts Published (Last 12 Months)</h2>
+      @if (postsPerMonthData()) {
+        <div class="chart-area">
+          <p-chart type="line" [data]="postsPerMonthData()" [options]="lineOptions()" />
+        </div>
+      }
+    </div>
+
+    <!-- Top posts side-by-side -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Top by views -->
+      <div class="chart-card">
+        <h2 class="chart-title">Top Posts by Views</h2>
+        @if (s.topPostsByViews.length === 0) {
+          <p class="text-sm text-gray-400 py-6 text-center">No data yet.</p>
+        } @else if (topViewsData()) {
+          <div class="chart-area">
+            <p-chart type="bar" [data]="topViewsData()" [options]="barOptions()" />
+          </div>
+        }
+      </div>
+
+      <!-- Top by likes -->
+      <div class="chart-card">
+        <h2 class="chart-title">Top Posts by Likes</h2>
+        @if (s.topPostsByLikes.length === 0) {
+          <p class="text-sm text-gray-400 py-6 text-center">No data yet.</p>
+        } @else if (topLikesData()) {
+          <div class="chart-area">
+            <p-chart type="bar" [data]="topLikesData()" [options]="barOptions()" />
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,42 @@
+<div>
+  <h1 class="text-4xl font-bold text-gray-900 mb-6">Bookmarks</h1>
+
+  @if (loading()) {
+    <div class="flex justify-center py-10">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else {
+    @if (!bookmarks().length) {
+      <div class="text-center py-16">
+        <i class="pi pi-bookmark text-5xl text-gray-300 mb-4 block"></i>
+        <p class="text-lg text-gray-500 font-medium">No bookmarks yet</p>
+        <p class="text-sm text-gray-400 mt-1">
+          Stories you bookmark will appear here for easy access.
+        </p>
+        <a routerLink="/explore" class="inline-block mt-4">
+          <p-button label="Explore stories" severity="contrast" />
+        </a>
+      </div>
+    } @else {
+      <div class="space-y-6">
+        @for (bookmark of bookmarks(); track bookmark._id) {
+          @if (bookmark.blog) {
+            <div class="relative">
+              <app-blog-card [blog]="bookmark.blog" />
+              <div class="flex justify-end mt-2">
+                <p-button
+                  icon="pi pi-bookmark-fill"
+                  label="Remove"
+                  [text]="true"
+                  size="small"
+                  severity="danger"
+                  (click)="removeBookmark(bookmark.blogId)"
+                />
+              </div>
+            </div>
+          }
+        }
+      </div>
+    }
+  }
+</div>

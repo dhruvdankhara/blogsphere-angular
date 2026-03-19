@@ -1,0 +1,38 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <h1 class="text-3xl font-bold text-gray-900 mb-6">Search</h1>
+
+  <form (ngSubmit)="performSearch()" class="flex gap-3 mb-8">
+    <input
+      type="text"
+      pInputText
+      [(ngModel)]="query"
+      name="query"
+      class="flex-1"
+      placeholder="Search stories..."
+    />
+    <p-button type="submit" icon="pi pi-search" label="Search" severity="contrast" [loading]="loading()" />
+  </form>
+
+  @if (loading()) {
+    <div class="flex justify-center py-10">
+      <p-progressSpinner strokeWidth="3" />
+    </div>
+  } @else if (searched()) {
+    <p class="text-sm text-gray-500 mb-6">{{ results().length }} results for "{{ query() }}"</p>
+    @for (blog of results(); track blog._id) {
+      <app-blog-card [blog]="blog" />
+    }
+    @if (!results().length) {
+      <div class="text-center py-16">
+        <i class="pi pi-search text-4xl text-gray-300 mb-4"></i>
+        <p class="text-gray-400">No stories found for "{{ query() }}"</p>
+        <p class="text-sm text-gray-400 mt-1">Try different keywords or check your spelling</p>
+      </div>
+    }
+  } @else {
+    <div class="text-center py-16">
+      <i class="pi pi-search text-4xl text-gray-300 mb-4"></i>
+      <p class="text-gray-400">Search for stories, topics, and more</p>
+    </div>
+  }
+</div>

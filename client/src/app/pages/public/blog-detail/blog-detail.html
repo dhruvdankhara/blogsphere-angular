@@ -1,0 +1,250 @@
+@if (loading()) {
+  <div class="flex justify-center py-20">
+    <p-progressSpinner strokeWidth="3" />
+  </div>
+} @else if (blog()) {
+  <article class="max-w-3xl mx-auto px-4 py-10">
+    <!-- Title -->
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+      {{ blog()!.title }}
+    </h1>
+
+    <!-- Author Info -->
+    <div class="flex items-center gap-3 mb-8">
+      <p-avatar
+        [image]="blog()!.author.avatar || ''"
+        [label]="blog()!.author.avatar ? '' : blog()!.author.name?.[0] || 'U'"
+        shape="circle"
+        styleClass="bg-gray-200 text-gray-700"
+      />
+      <div>
+        <a
+          [routerLink]="['/profile', blog()!.author.username]"
+          class="text-sm font-medium text-gray-900 no-underline hover:underline"
+        >
+          {{ blog()!.author.name }}
+        </a>
+        <p class="text-sm text-gray-500">
+          {{ blog()!.createdAt | date: 'MMM d, y' }} &middot; {{ blog()!.visits }} views
+        </p>
+      </div>
+    </div>
+
+    <!-- Actions Bar -->
+    <div class="flex items-center justify-between border-y border-gray-200 py-3 mb-8">
+      <div class="flex items-center gap-4">
+        <button
+          (click)="toggleLike()"
+          class="flex items-center gap-1 text-gray-500 hover:text-red-500 cursor-pointer bg-transparent border-0"
+        >
+          <i
+            [class]="blog()!.isLiked ? 'fa-solid fa-heart text-red-500' : 'fa-regular fa-heart'"
+          ></i>
+          <span class="text-sm">{{ blog()!.likes }}</span>
+        </button>
+        <span class="flex items-center gap-1 text-gray-500">
+          <i class="fa-regular fa-comment"></i>
+          <span class="text-sm">{{ blog()!.comments }}</span>
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        @if (auth.isLoggedIn()) {
+          <button
+            (click)="toggleBookmark()"
+            class="text-gray-500 hover:text-gray-900 cursor-pointer bg-transparent border-0"
+          >
+            <i
+              [class]="blog()!.isBookmarked ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'"
+            ></i>
+          </button>
+          <button
+            (click)="showReportDialog = true"
+            class="text-gray-400 hover:text-gray-600 cursor-pointer bg-transparent border-0"
+          >
+            <i class="fa-regular fa-flag"></i>
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Feature Image -->
+    @if (blog()!.featureImage) {
+      <img
+        [src]="blog()!.featureImage"
+        [alt]="blog()!.title"
+        class="w-full rounded-lg mb-8 max-h-125 object-cover"
+      />
+    }
+
+    <!-- Content -->
+    <div
+      class="prose prose-lg max-w-fit mb-10 text-gray-800 leading-relaxed text-justify"
+      [innerHTML]="sanitizedContent()"
+    ></div>
+
+    <!-- Tags -->
+    @if (blog()!.tags.length) {
+      <div class="flex flex-wrap gap-2 mb-10">
+        @for (tag of blog()!.tags; track tag._id) {
+          <app-tag-chip [name]="tag.name" [slug]="tag.slug" />
+        }
+      </div>
+    }
+
+    <p-divider />
+
+    <!-- Comments Section -->
+    <section class="mt-8">
+      <h3 class="text-xl font-bold text-gray-900 mb-6">Comments</h3>
+
+      @if (auth.isLoggedIn()) {
+        <div class="mb-6">
+          <textarea
+            pTextarea
+            [(ngModel)]="newComment"
+            rows="3"
+            class="w-full"
+            placeholder="Share your thoughts..."
+          ></textarea>
+          <div class="mt-2 flex justify-end">
+            <p-button
+              label="Comment"
+              severity="contrast"
+              size="small"
+              (click)="addComment()"
+              [disabled]="!newComment.trim()"
+            />
+          </div>
+        </div>
+      }
+
+      @for (comment of comments(); track comment._id) {
+        <div class="py-4 border-b border-gray-100">
+          <div class="flex items-center gap-2 mb-2">
+            <p-avatar
+              [image]="comment.author.avatar || ''"
+              [label]="comment.author.avatar ? '' : comment.author.name?.[0] || 'U'"
+              shape="circle"
+              styleClass="bg-gray-200 text-gray-600"
+            />
+            <span class="text-sm font-medium text-gray-900">{{ comment.author.name }}</span>
+            <span class="text-sm text-gray-400">{{ comment.createdAt | date: 'MMM d' }}</span>
+          </div>
+          <p class="text-gray-700 ml-10">{{ comment.content }}</p>
+          <div class="ml-10 mt-2 flex items-center gap-3">
+            @if (comment.replyCount) {
+              <button
+                (click)="toggleReplies(comment._id)"
+                class="text-sm text-gray-500 hover:text-gray-700 bg-transparent border-0 cursor-pointer"
+              >
+                {{ showReplies[comment._id] ? 'Hide' : 'View' }} {{ comment.replyCount }}
+                {{ comment.replyCount === 1 ? 'reply' : 'replies' }}
+              </button>
+            }
+            @if (auth.isLoggedIn()) {
+              <button
+                (click)="
+                  replyContent[comment._id] =
+                    replyContent[comment._id] !== undefined ? undefined! : ''
+                "
+                class="text-sm text-gray-500 hover:text-gray-700 bg-transparent border-0 cursor-pointer"
+              >
+                Reply
+              </button>
+            }
+          </div>
+
+          <!-- Reply input -->
+          @if (replyContent[comment._id] !== undefined) {
+            <div class="ml-10 mt-3">
+              <textarea
+                pTextarea
+                [(ngModel)]="replyContent[comment._id]"
+                rows="2"
+                class="w-full"
+                placeholder="Write a reply..."
+              ></textarea>
+              <div class="mt-1 flex justify-end gap-2">
+                <p-button
+                  label="Cancel"
+                  [text]="true"
+                  size="small"
+                  (click)="replyContent[comment._id] = undefined!"
+                />
+                <p-button
+                  label="Reply"
+                  severity="contrast"
+                  size="small"
+                  (click)="addReply(comment._id)"
+                  [disabled]="!replyContent[comment._id]?.trim()"
+                />
+              </div>
+            </div>
+          }
+
+          <!-- Replies -->
+          @if (showReplies[comment._id]) {
+            <div class="ml-10 mt-3 pl-4 border-l-2 border-gray-100">
+              @for (reply of showReplies[comment._id]; track reply._id) {
+                <div class="py-2">
+                  <div class="flex items-center gap-2 mb-1">
+                    <p-avatar
+                      [image]="reply.author.avatar || ''"
+                      [label]="reply.author.avatar ? '' : reply.author.name?.[0] || 'U'"
+                      shape="circle"
+                      styleClass="bg-gray-100 text-gray-600"
+                    />
+                    <span class="text-sm font-medium text-gray-900">{{ reply.author.name }}</span>
+                    <span class="text-sm text-gray-400">{{ reply.createdAt | date: 'MMM d' }}</span>
+                  </div>
+                  <p class="text-sm text-gray-700 ml-8">{{ reply.content }}</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </article>
+
+  <!-- Report Dialog -->
+  <p-dialog
+    header="Report Blog Post"
+    [(visible)]="showReportDialog"
+    [modal]="true"
+    [style]="{ width: '450px' }"
+  >
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
+        <p-select
+          [options]="reportReasons"
+          [(ngModel)]="reportReason"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Select a reason"
+          styleClass="w-full"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Description (optional)</label>
+        <textarea
+          pTextarea
+          [(ngModel)]="reportDescription"
+          rows="3"
+          class="w-full"
+          placeholder="Provide more details..."
+        ></textarea>
+      </div>
+    </div>
+    <ng-template #footer>
+      <p-button label="Cancel" [text]="true" (click)="showReportDialog = false" />
+      <p-button
+        label="Submit Report"
+        severity="danger"
+        (click)="submitReport()"
+        [disabled]="!reportReason"
+      />
+    </ng-template>
+  </p-dialog>
+}
