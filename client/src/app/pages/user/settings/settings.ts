@@ -8,23 +8,12 @@ import { Select } from 'primeng/select';
 import { Password } from 'primeng/password';
 import { Avatar } from 'primeng/avatar';
 import { FileUpload } from 'primeng/fileupload';
-import { Divider } from 'primeng/divider';
 import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [
-    FormsModule,
-    InputText,
-    Textarea,
-    Button,
-    Select,
-    Password,
-    Avatar,
-    FileUpload,
-    Divider,
-  ],
+  imports: [FormsModule, InputText, Textarea, Button, Select, Password, Avatar, FileUpload],
   templateUrl: './settings.html',
   styleUrl: './settings.css',
 })

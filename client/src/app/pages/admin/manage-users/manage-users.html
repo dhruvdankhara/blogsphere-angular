@@ -1,25 +1,26 @@
-<div>
-  <div class="flex items-center justify-between mb-6">
-    <div>
-      <h1 class="text-2xl font-bold text-gray-900">Manage Users</h1>
-      <p class="text-sm text-gray-500 mt-1">View and manage all platform users</p>
-    </div>
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="mb-10">
+    <h1 class="text-4xl md:text-5xl font-black text-[#172033] mb-2">Manage Users</h1>
+    <p class="text-lg text-gray-500">View and manage all platform users</p>
   </div>
 
-  <div class="mb-4">
-    <div class="flex items-center gap-3">
-      <div class="p-inputgroup flex-1" style="max-width: 400px">
-        <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
-        <input
-          type="text"
-          pInputText
-          placeholder="Search users by name, username or email..."
-          [ngModel]="searchQuery()"
-          (ngModelChange)="searchQuery.set($event)"
-          (keyup.enter)="onSearch()"
-        />
-      </div>
-      <p-button label="Search" icon="pi pi-search" (click)="onSearch()" severity="contrast" />
+  <!-- Search Bar -->
+  <div class="mb-8">
+    <div
+      class="flex items-center gap-3 rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] p-6"
+    >
+      <i class="fa fa-search text-gray-400"></i>
+      <input
+        type="text"
+        pInputText
+        placeholder="Search users by name, username or email..."
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+        (keyup.enter)="onSearch()"
+        class="flex-1 border-0 outline-none text-[#172033]"
+      />
+      <p-button label="Search" icon="fa fa-search" (click)="onSearch()" severity="contrast" />
     </div>
   </div>
 
@@ -28,59 +29,79 @@
       <p-progressSpinner strokeWidth="3" />
     </div>
   } @else {
-    <p-table
-      [value]="users()"
-      [paginator]="true"
-      [rows]="10"
-      [rowsPerPageOptions]="[10, 25, 50]"
-      [tableStyle]="{ 'min-width': '60rem' }"
-      stripedRows
+    <div
+      class="rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] overflow-hidden"
     >
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Avatar</th>
-          <th pSortableColumn="name">Name <p-sortIcon field="name" /></th>
-          <th pSortableColumn="username">Username <p-sortIcon field="username" /></th>
-          <th>Email</th>
-          <th>Role</th>
-          <th pSortableColumn="createdAt">Joined <p-sortIcon field="createdAt" /></th>
-          <th>Actions</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-user>
-        <tr>
-          <td>
-            <p-avatar [image]="user.avatar" shape="circle" size="normal" />
-          </td>
-          <td class="font-medium text-gray-900">{{ user.name }}</td>
-          <td class="text-gray-600">{{ user.username }}</td>
-          <td class="text-gray-600">{{ user.email }}</td>
-          <td>
-            <p-select
-              [options]="roleOptions"
-              [ngModel]="user.role"
-              (ngModelChange)="onRoleChange(user._id, $event)"
-              placeholder="Select Role"
-              [style]="{ width: '120px' }"
-            />
-          </td>
-          <td class="text-gray-500">{{ user.createdAt | date: 'MMM d, y' }}</td>
-          <td>
-            <p-button
-              icon="pi pi-trash"
-              [text]="true"
-              severity="danger"
-              size="small"
-              (click)="deleteUser(user)"
-            />
-          </td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="7" class="text-center text-gray-400 py-10">No users found</td>
-        </tr>
-      </ng-template>
-    </p-table>
+      <p-table
+        [value]="users()"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [tableStyle]="{ 'min-width': '60rem' }"
+        stripedRows
+      >
+        <ng-template pTemplate="header">
+          <tr class="bg-gradient-to-r from-[#172033]/5 to-transparent">
+            <th class="text-[#172033] font-bold">Avatar</th>
+            <th pSortableColumn="name" class="text-[#172033] font-bold">
+              Name <p-sortIcon field="name" />
+            </th>
+            <th pSortableColumn="username" class="text-[#172033] font-bold">
+              Username <p-sortIcon field="username" />
+            </th>
+            <th class="text-[#172033] font-bold">Email</th>
+            <th class="text-[#172033] font-bold">Role</th>
+            <th pSortableColumn="createdAt" class="text-[#172033] font-bold">
+              Joined <p-sortIcon field="createdAt" />
+            </th>
+            <th class="text-[#172033] font-bold">Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+          <tr class="hover:bg-slate-900/3 transition-colors">
+            <td>
+              <p-avatar
+                [image]="user.avatar"
+                shape="circle"
+                size="normal"
+                styleClass="bg-gradient-to-br from-[#355d87] to-[#172033] text-white"
+              />
+            </td>
+            <td class="font-semibold text-[#172033]">{{ user.name }}</td>
+            <td class="text-gray-600">{{ user.username }}</td>
+            <td class="text-gray-600">{{ user.email }}</td>
+            <td>
+              <p-select
+                [options]="roleOptions"
+                [ngModel]="user.role"
+                (ngModelChange)="onRoleChange(user._id, $event)"
+                placeholder="Select Role"
+                [style]="{ width: '120px' }"
+              />
+            </td>
+            <td class="text-gray-600">{{ user.createdAt | date: 'MMM d, y' }}</td>
+            <td>
+              <p-button
+                icon="fa fa-trash"
+                severity="danger"
+                size="small"
+                [outlined]="true"
+                (click)="deleteUser(user)"
+              />
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="text-center py-16">
+              <div class="flex flex-col items-center justify-center">
+                <i class="fa fa-users text-5xl text-gray-300 mb-4"></i>
+                <p class="text-gray-400 font-medium">No users found</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   }
 </div>

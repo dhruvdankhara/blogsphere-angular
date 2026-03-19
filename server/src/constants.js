@@ -2,9 +2,9 @@ export const DB_NAME = "blogsphere-db";
 
 export const UserGenderEnum = {
   NULL: "",
-  MALE: "MALE",
-  FEMALE: "FEMALE",
-  OTHER: "OTHER",
+  MALE: "male",
+  FEMALE: "female",
+  OTHER: "other",
 };
 
 export const AvailableUserGender = Object.values(UserGenderEnum);

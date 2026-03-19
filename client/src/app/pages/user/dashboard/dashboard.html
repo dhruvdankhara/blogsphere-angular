@@ -1,77 +1,106 @@
-<div class="flex">
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <!-- Dashboard Header -->
+  <div class="mb-10">
+    <h1 class="text-4xl md:text-5xl font-black text-[#172033] mb-2">Dashboard</h1>
+    <p class="text-lg text-gray-500">Personalized feed for your reading experience</p>
+  </div>
+
   <!-- Main Feed -->
-  <div class="flex-1 min-w-0 max-w-4xl mx-auto">
+  <div class="flex-1 min-w-0">
     @if (loading()) {
-      <div class="flex justify-center py-10">
+      <div class="flex justify-center py-16">
         <p-progressSpinner strokeWidth="3" />
       </div>
     } @else {
-      <p-tabs [value]="0">
-        <p-tablist>
-          <p-tab [value]="0">For you</p-tab>
-          <p-tab [value]="1">Featured</p-tab>
-        </p-tablist>
-        <p-tabpanels>
-          <p-tabpanel [value]="0">
-            @for (blog of blogs(); track blog._id) {
-              <app-blog-card [blog]="blog" />
-            }
-            @if (!blogs().length) {
-              <div class="text-center py-16">
-                <p class="text-gray-400 mb-4">No stories to show</p>
-                <a routerLink="/explore" class="text-gray-900 font-medium hover:underline"
-                  >Explore stories</a
-                >
-              </div>
-            }
-          </p-tabpanel>
-          <p-tabpanel [value]="1">
-            @for (blog of featuredBlogs(); track blog._id) {
-              <app-blog-card [blog]="blog" />
-            }
-            @if (!featuredBlogs().length) {
-              <div class="text-center py-16">
-                <p class="text-gray-400">No featured stories yet</p>
-              </div>
-            }
-          </p-tabpanel>
-        </p-tabpanels>
-      </p-tabs>
+      <div
+        class="rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] overflow-hidden"
+      >
+        <p-tabs [value]="0" styleClass="dashboard-tabs">
+          <p-tablist>
+            <p-tab [value]="0">For you</p-tab>
+            <p-tab [value]="1">Featured</p-tab>
+          </p-tablist>
+          <p-tabpanels>
+            <p-tabpanel [value]="0">
+              @for (blog of blogs(); track blog._id) {
+                <app-blog-card [blog]="blog" />
+              }
+              @if (!blogs().length) {
+                <div class="flex flex-col items-center justify-center py-24">
+                  <i class="fa fa-inbox text-5xl text-gray-300 mb-6"></i>
+                  <p class="text-lg text-gray-400 mb-4 font-medium">No stories to show</p>
+                  <a routerLink="/explore">
+                    <p-button label="Explore stories" severity="contrast" />
+                  </a>
+                </div>
+              }
+            </p-tabpanel>
+            <p-tabpanel [value]="1">
+              @for (blog of featuredBlogs(); track blog._id) {
+                <app-blog-card [blog]="blog" />
+              }
+              @if (!featuredBlogs().length) {
+                <div class="flex flex-col items-center justify-center py-24">
+                  <i class="fa fa-star text-5xl text-gray-300 mb-6"></i>
+                  <p class="text-lg text-gray-400 font-medium">No featured stories yet</p>
+                </div>
+              }
+            </p-tabpanel>
+          </p-tabpanels>
+        </p-tabs>
+      </div>
     }
   </div>
 
   <!-- Right Sidebar -->
   <aside
-    class="hidden xl:block w-80 p-6 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto shrink-0 border-l border-gray-100"
+    class="hidden xl:block w-96 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto shrink-0 mt-8"
   >
-    <!-- Staff Picks -->
-    <div class="mb-8">
-      <h3 class="text-sm font-bold text-gray-900 mb-4">Staff Picks</h3>
-      @for (blog of staffPicks(); track blog._id) {
-        <a [routerLink]="['/blog', blog.slug]" class="block mb-4 no-underline">
-          <div class="flex items-center gap-2 mb-1">
-            <img
-              [src]="blog.author.avatar || ''"
-              [alt]="blog.author.name || ''"
-              class="w-5 h-5 rounded-full object-cover"
-            />
-            <span class="text-xs text-gray-600">{{ blog.author.name }}</span>
-          </div>
-          <h4 class="text-sm font-bold text-gray-900 leading-tight line-clamp-2">
-            {{ blog.title }}
-          </h4>
-        </a>
-      }
+    <!-- Staff Picks Card -->
+    <div
+      class="rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] p-6 mb-8"
+    >
+      <h3 class="text-lg font-bold text-[#172033] mb-4 flex items-center gap-2">
+        <i class="fa fa-star text-[#d96c3f]"></i>
+        Staff Picks
+      </h3>
+      <div class="space-y-3">
+        @for (blog of staffPicks(); track blog._id) {
+          <a
+            [routerLink]="['/blog', blog.slug]"
+            class="block p-3 rounded-lg hover:bg-gray-50 no-underline transition-colors group"
+          >
+            <div class="flex items-center gap-2 mb-1.5">
+              <img
+                [src]="blog.author.avatar || ''"
+                [alt]="blog.author.name || ''"
+                class="w-6 h-6 rounded-full object-cover border border-slate-900/10"
+              />
+              <span class="text-xs text-gray-600 font-medium">{{ blog.author.name }}</span>
+            </div>
+            <h4
+              class="text-sm font-bold text-[#172033] leading-tight line-clamp-2 group-hover:text-[#355d87] transition-colors"
+            >
+              {{ blog.title }}
+            </h4>
+          </a>
+        }
+      </div>
     </div>
 
-    <!-- Recommended Topics -->
-    <div class="mb-8">
-      <h3 class="text-sm font-bold text-gray-900 mb-4">Recommended Topics</h3>
+    <!-- Recommended Topics Card -->
+    <div
+      class="rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] p-6"
+    >
+      <h3 class="text-lg font-bold text-[#172033] mb-4 flex items-center gap-2">
+        <i class="fa fa-tag text-[#355d87]"></i>
+        Recommended Topics
+      </h3>
       <div class="flex flex-wrap gap-2">
         @for (tag of tags(); track tag._id) {
           <a
             [routerLink]="['/tag', tag.slug]"
-            class="px-3 py-1.5 bg-gray-100 rounded-full text-sm text-gray-600 hover:bg-gray-200 no-underline"
+            class="px-3 py-2 bg-linear-to-r from-[#355d87]/10 to-[#d96c3f]/10 rounded-full text-sm text-[#355d87] hover:bg-gradient-to-r hover:from-[#355d87]/20 hover:to-[#d96c3f]/20 no-underline transition-colors font-medium border border-[#355d87]/20"
           >
             {{ tag.name }}
           </a>
@@ -82,18 +111,18 @@
     <!-- Quick Links -->
     <div>
       <div class="flex flex-wrap gap-x-3 gap-y-1">
-        <a routerLink="/about" class="text-xs text-gray-400 hover:text-gray-600 no-underline"
-          >About</a
-        >
-        <a routerLink="/terms" class="text-xs text-gray-400 hover:text-gray-600 no-underline"
-          >Terms</a
-        >
-        <a routerLink="/privacy" class="text-xs text-gray-400 hover:text-gray-600 no-underline"
-          >Privacy</a
-        >
-        <a routerLink="/contact" class="text-xs text-gray-400 hover:text-gray-600 no-underline"
-          >Contact</a
-        >
+        <a routerLink="/about" class="text-xs text-gray-400 hover:text-gray-600 no-underline">
+          About
+        </a>
+        <a routerLink="/terms" class="text-xs text-gray-400 hover:text-gray-600 no-underline">
+          Terms
+        </a>
+        <a routerLink="/privacy" class="text-xs text-gray-400 hover:text-gray-600 no-underline">
+          Privacy
+        </a>
+        <a routerLink="/contact" class="text-xs text-gray-400 hover:text-gray-600 no-underline">
+          Contact
+        </a>
       </div>
     </div>
   </aside>

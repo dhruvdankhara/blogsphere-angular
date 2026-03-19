@@ -1,60 +1,92 @@
-<div class="max-w-2xl mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold text-gray-900 mb-6">Settings</h1>
+<div class="max-w-3xl mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="mb-10">
+    <h1 class="text-4xl md:text-5xl font-black text-[#172033] mb-2">Settings</h1>
+    <p class="text-lg text-gray-500">Manage your profile and account</p>
+  </div>
 
-  <!-- Avatar -->
-  <section class="mb-8">
-    <h2 class="text-lg font-semibold text-gray-900 mb-4">Profile Photo</h2>
-    <div class="flex items-center gap-4">
+  <!-- Avatar Section -->
+  <div
+    class="rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] p-8 mb-8"
+  >
+    <h2 class="text-xl font-bold text-[#172033] mb-6">Profile Photo</h2>
+    <div class="flex items-center gap-6">
       <p-avatar
         [image]="auth.user()?.avatar || ''"
         [label]="auth.user()?.avatar ? '' : auth.user()?.name?.[0] || 'U'"
         shape="circle"
         size="xlarge"
-        styleClass="bg-gray-200 text-gray-700"
+        styleClass="bg-gradient-to-br from-[#355d87] to-[#172033] text-white"
       />
-      <p-fileupload
-        mode="basic"
-        accept="image/*"
-        [maxFileSize]="2000000"
-        chooseLabel="Change"
-        (onSelect)="onAvatarSelect($event)"
-        [auto]="false"
-        chooseStyleClass="p-button-outlined p-button-secondary p-button-sm"
-      />
+      <div>
+        <p class="text-sm text-gray-500 mb-3">Update your profile picture</p>
+        <p-fileupload
+          mode="basic"
+          accept="image/*"
+          [maxFileSize]="2000000"
+          chooseLabel="Choose Photo"
+          (onSelect)="onAvatarSelect($event)"
+          [auto]="false"
+          styleClass="w-full"
+        />
+      </div>
     </div>
-  </section>
+  </div>
 
-  <p-divider />
+  <!-- Profile Info Section -->
+  <div
+    class="rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] p-8 mb-8"
+  >
+    <h2 class="text-xl font-bold text-[#172033] mb-6">Profile Information</h2>
+    <form (ngSubmit)="saveProfile()" class="space-y-6 max-w-xl">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-semibold text-[#172033] mb-2">Full Name</label>
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="name"
+            name="name"
+            class="w-full px-4 py-3 rounded-lg border border-slate-900/10 focus:outline-none focus:ring-2 focus:ring-[#355d87]/20"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-[#172033] mb-2">Username</label>
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="username"
+            name="username"
+            class="w-full px-4 py-3 rounded-lg border border-slate-900/10 focus:outline-none focus:ring-2 focus:ring-[#355d87]/20"
+          />
+        </div>
+      </div>
 
-  <!-- Profile Info -->
-  <section class="mb-8">
-    <h2 class="text-lg font-semibold text-gray-900 mb-4">Profile Information</h2>
-    <form (ngSubmit)="saveProfile()" class="space-y-4 max-w-lg">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-        <input type="text" pInputText [(ngModel)]="name" name="name" class="w-full" />
+        <label class="block text-sm font-semibold text-[#172033] mb-2">Email Address</label>
+        <input
+          type="email"
+          pInputText
+          [(ngModel)]="email"
+          name="email"
+          class="w-full px-4 py-3 rounded-lg border border-slate-900/10 focus:outline-none focus:ring-2 focus:ring-[#355d87]/20"
+        />
       </div>
+
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-        <input type="text" pInputText [(ngModel)]="username" name="username" class="w-full" />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input type="email" pInputText [(ngModel)]="email" name="email" class="w-full" />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+        <label class="block text-sm font-semibold text-[#172033] mb-2">Bio</label>
         <textarea
           pTextarea
           [(ngModel)]="bio"
           name="bio"
-          rows="3"
-          class="w-full"
+          rows="4"
+          class="w-full px-4 py-3 rounded-lg border border-slate-900/10 focus:outline-none focus:ring-2 focus:ring-[#355d87]/20"
           placeholder="Tell people about yourself"
         ></textarea>
       </div>
+
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+        <label class="block text-sm font-semibold text-[#172033] mb-2">Gender</label>
         <p-select
           [options]="genderOptions"
           [(ngModel)]="gender"
@@ -65,60 +97,70 @@
           styleClass="w-full"
         />
       </div>
-      <p-button
-        type="submit"
-        label="Save Changes"
-        [loading]="savingProfile()"
-        severity="contrast"
-      />
+
+      <div class="pt-4">
+        <p-button
+          type="submit"
+          label="Save Changes"
+          [loading]="savingProfile()"
+          severity="contrast"
+          size="large"
+        />
+      </div>
     </form>
-  </section>
+  </div>
 
-  <p-divider />
-
-  <!-- Password -->
-  <section>
-    <h2 class="text-lg font-semibold text-gray-900 mb-4">Change Password</h2>
-    <form (ngSubmit)="changePassword()" class="space-y-4 max-w-lg">
+  <!-- Password Section -->
+  <div
+    class="rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] p-8"
+  >
+    <h2 class="text-xl font-bold text-[#172033] mb-6">Change Password</h2>
+    <form (ngSubmit)="changePassword()" class="space-y-6 max-w-xl">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+        <label class="block text-sm font-semibold text-[#172033] mb-2">Current Password</label>
         <p-password
           [(ngModel)]="oldPassword"
           name="oldPassword"
           [toggleMask]="true"
           [feedback]="false"
           styleClass="w-full"
-          inputStyleClass="w-full"
+          inputStyleClass="w-full px-4 py-3 rounded-lg border border-slate-900/10"
         />
       </div>
+
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+        <label class="block text-sm font-semibold text-[#172033] mb-2">New Password</label>
         <p-password
           [(ngModel)]="newPassword"
           name="newPassword"
           [toggleMask]="true"
           [feedback]="true"
           styleClass="w-full"
-          inputStyleClass="w-full"
+          inputStyleClass="w-full px-4 py-3 rounded-lg border border-slate-900/10"
         />
       </div>
+
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+        <label class="block text-sm font-semibold text-[#172033] mb-2">Confirm New Password</label>
         <p-password
           [(ngModel)]="confirmPassword"
           name="confirmPassword"
           [toggleMask]="true"
           [feedback]="false"
           styleClass="w-full"
-          inputStyleClass="w-full"
+          inputStyleClass="w-full px-4 py-3 rounded-lg border border-slate-900/10"
         />
       </div>
-      <p-button
-        type="submit"
-        label="Change Password"
-        [loading]="savingPassword()"
-        severity="secondary"
-      />
+
+      <div class="pt-4">
+        <p-button
+          type="submit"
+          label="Change Password"
+          [loading]="savingPassword()"
+          severity="secondary"
+          size="large"
+        />
+      </div>
     </form>
-  </section>
+  </div>
 </div>

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { BlogService } from '../../../core/services/blog';
 import { Blog } from '../../../core/models/index';
@@ -22,6 +22,8 @@ export class Search implements OnInit {
   results = signal<Blog[]>([]);
   loading = signal(false);
   searched = signal(false);
+
+  popularSearches = ['Design', 'Startups', 'Productivity', 'Tech', 'Writing'];
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {

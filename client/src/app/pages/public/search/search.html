@@ -1,38 +1,107 @@
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-  <h1 class="text-3xl font-bold text-gray-900 mb-6">Search</h1>
-
-  <form (ngSubmit)="performSearch()" class="flex gap-3 mb-8">
-    <input
-      type="text"
-      pInputText
-      [(ngModel)]="query"
-      name="query"
-      class="flex-1"
-      placeholder="Search stories..."
-    />
-    <p-button type="submit" icon="pi pi-search" label="Search" severity="contrast" [loading]="loading()" />
-  </form>
-
-  @if (loading()) {
-    <div class="flex justify-center py-10">
-      <p-progressSpinner strokeWidth="3" />
+<div class="min-h-full">
+  <section class="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+    <div
+      class="mb-8 rounded-[2rem] border border-slate-900/10 bg-white/82 p-6 shadow-[0_20px_50px_rgba(23,32,51,0.07)] backdrop-blur"
+    >
+      <form (ngSubmit)="performSearch()" class="grid gap-4">
+        <div>
+          <label class="mb-3 block text-sm font-bold text-[#172033]" for="search-input">
+            Search the archive
+          </label>
+          <div class="relative">
+            <i class="fa fa-search absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"></i>
+            <input
+              id="search-input"
+              type="text"
+              pInputText
+              [(ngModel)]="query"
+              name="query"
+              class="min-h-14 w-full rounded-2xl border border-slate-900/10 bg-slate-50/90 py-4 pr-4 pl-11 text-[#172033]"
+              placeholder="Try “design systems”, “startup lessons”, “productivity”"
+            />
+          </div>
+        </div>
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#677287]"
+              >Popular</span
+            >
+            @for (term of popularSearches; track term) {
+              <button
+                type="button"
+                class="rounded-full bg-slate-100 px-4 py-2.5 text-[0.92rem] font-semibold text-[#172033] transition hover:-translate-y-0.5 hover:bg-[#d96c3f]/12"
+                (click)="query.set(term); performSearch()"
+              >
+                {{ term }}
+              </button>
+            }
+          </div>
+          <p-button
+            type="submit"
+            icon="fa fa-search"
+            label="Search"
+            severity="contrast"
+            [loading]="loading()"
+          />
+        </div>
+      </form>
     </div>
-  } @else if (searched()) {
-    <p class="text-sm text-gray-500 mb-6">{{ results().length }} results for "{{ query() }}"</p>
-    @for (blog of results(); track blog._id) {
-      <app-blog-card [blog]="blog" />
-    }
-    @if (!results().length) {
-      <div class="text-center py-16">
-        <i class="pi pi-search text-4xl text-gray-300 mb-4"></i>
-        <p class="text-gray-400">No stories found for "{{ query() }}"</p>
-        <p class="text-sm text-gray-400 mt-1">Try different keywords or check your spelling</p>
-      </div>
-    }
-  } @else {
-    <div class="text-center py-16">
-      <i class="pi pi-search text-4xl text-gray-300 mb-4"></i>
-      <p class="text-gray-400">Search for stories, topics, and more</p>
-    </div>
-  }
+
+    <section
+      class="rounded-4xl border border-slate-900/10 bg-white/76 p-6 shadow-[0_20px_50px_rgba(23,32,51,0.07)] backdrop-blur"
+    >
+      @if (loading()) {
+        <div class="flex min-h-64 items-center justify-center text-center">
+          <p-progressSpinner strokeWidth="3" />
+        </div>
+      } @else if (searched()) {
+        <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#d96c3f]"
+              >Search results</span
+            >
+            <h2
+              class="mt-2 text-[clamp(1.7rem,4vw,2.3rem)] leading-[1.05] font-extrabold tracking-[-0.04em] text-[#172033]"
+            >
+              {{ results().length }} matches for "{{ query() }}"
+            </h2>
+          </div>
+          <p class="max-w-88 text-[#677287] md:text-right">
+            Refined reading results based on your current keyword.
+          </p>
+        </div>
+
+        @if (results().length) {
+          <div class="rounded-3xl border border-slate-900/8 bg-white px-4 sm:px-5">
+            @for (blog of results(); track blog._id) {
+              <app-blog-card [blog]="blog" />
+            }
+          </div>
+        } @else {
+          <div class="flex min-h-64 flex-col items-center justify-center gap-3 text-center">
+            <div
+              class="inline-flex h-17 w-17 items-center justify-center rounded-3xl bg-[linear-gradient(135deg,rgba(217,108,63,0.14),rgba(53,93,135,0.12))] text-[1.4rem] text-[#355d87]"
+            >
+              <i class="fa fa-search"></i>
+            </div>
+            <h3 class="text-[1.35rem] font-bold tracking-[-0.03em] text-[#172033]">
+              No stories found for "{{ query() }}"
+            </h3>
+            <p class="max-w-[32rem] leading-7 text-[#677287]">
+              Try a broader keyword, a shorter phrase, or one of the popular searches above.
+            </p>
+          </div>
+        }
+      } @else {
+        <div class="flex min-h-64 flex-col items-center justify-center gap-3 text-center">
+          <h3 class="text-[1.35rem] font-bold tracking-[-0.03em] text-[#172033]">
+            Start with a topic, idea, or phrase
+          </h3>
+          <p class="max-w-[32rem] leading-7 text-[#677287]">
+            Search for stories, perspectives, and deep dives across the platform.
+          </p>
+        </div>
+      }
+    </section>
+  </section>
 </div>

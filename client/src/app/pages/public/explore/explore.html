@@ -1,52 +1,83 @@
-<div class="explore-page">
-  <section class="explore-shell">
-    <div class="explore-hero">
-      <div class="explore-hero__copy">
-        <span class="explore-kicker">Curated discovery</span>
-        <h1 class="explore-title">
+<div class="min-h-full">
+  <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+    <div class="mb-8 grid gap-6 md:grid-cols-[minmax(0,1.45fr)_minmax(20rem,0.95fr)]">
+      <div
+        class="rounded-[2rem] border border-slate-900/10 bg-[linear-gradient(135deg,rgba(255,250,242,0.95),rgba(255,255,255,0.88))] p-8 shadow-[0_24px_60px_rgba(23,32,51,0.08)] backdrop-blur"
+      >
+        <span
+          class="inline-flex text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#d96c3f]"
+          >Curated discovery</span
+        >
+        <h1
+          class="mt-4 mb-4 text-[clamp(3rem,8vw,5.4rem)] leading-[0.95] font-extrabold tracking-[-0.06em] text-[#172033]"
+        >
           Find the stories,
-          <span>topics, and voices</span>
+          <span class="block text-[#355d87]">topics, and voices</span>
           worth staying with.
         </h1>
-        <p class="explore-subtitle">
-          Dive into fresh writing across BlogSphere with a calmer, more editorial browse
-          experience.
+        <p class="max-w-[40rem] text-[1.05rem] leading-8 text-[#677287]">
+          Dive into fresh writing across BlogSphere with a calmer, more editorial browse experience.
         </p>
 
-        <div class="explore-stats" aria-label="Explore overview">
-          <div class="explore-stat">
-            <strong>{{ blogs().length }}</strong>
-            <span>Stories</span>
+        <div class="mt-8 grid gap-3 sm:grid-cols-3" aria-label="Explore overview">
+          <div class="rounded-2xl border border-slate-900/8 bg-white/70 px-4 py-4">
+            <strong class="block text-2xl font-extrabold text-[#172033]">{{
+              blogs().length
+            }}</strong>
+            <span class="text-sm text-[#677287]">Stories</span>
           </div>
-          <div class="explore-stat">
-            <strong>{{ categories().length }}</strong>
-            <span>Collections</span>
+          <div class="rounded-2xl border border-slate-900/8 bg-white/70 px-4 py-4">
+            <strong class="block text-2xl font-extrabold text-[#172033]">{{
+              categories().length
+            }}</strong>
+            <span class="text-sm text-[#677287]">Collections</span>
           </div>
-          <div class="explore-stat">
-            <strong>{{ tags().length }}</strong>
-            <span>Topics</span>
+          <div class="rounded-2xl border border-slate-900/8 bg-white/70 px-4 py-4">
+            <strong class="block text-2xl font-extrabold text-[#172033]">{{
+              tags().length
+            }}</strong>
+            <span class="text-sm text-[#677287]">Topics</span>
           </div>
         </div>
       </div>
 
-      <div class="explore-hero__panels">
-        <div class="hero-panel hero-panel--dark">
-          <p class="hero-panel__eyebrow">Now browsing</p>
-          <h2>Editorial picks and deep dives for curious readers.</h2>
-          <p>
+      <div class="grid gap-4">
+        <div
+          class="rounded-[1.8rem] border border-slate-900/10 bg-[linear-gradient(135deg,rgba(14,21,35,0.96),rgba(43,60,86,0.92))] p-6 text-slate-50 shadow-[0_24px_60px_rgba(23,32,51,0.08)] backdrop-blur"
+        >
+          <p class="mb-3 text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#f2d3c1]">
+            Now browsing
+          </p>
+          <h2 class="mb-3 text-[1.6rem] leading-[1.1] font-bold">
+            Editorial picks and deep dives for curious readers.
+          </h2>
+          <p class="leading-7 text-inherit">
             Move from broad themes into standout stories without the usual clutter.
           </p>
         </div>
 
         @if (featuredStories().length) {
-          <div class="hero-panel hero-panel--light">
-            <p class="hero-panel__eyebrow">Fresh reads</p>
+          <div
+            class="rounded-[1.8rem] border border-slate-900/10 bg-white/84 p-6 shadow-[0_24px_60px_rgba(23,32,51,0.08)] backdrop-blur"
+          >
+            <p class="mb-3 text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#d96c3f]">
+              Fresh reads
+            </p>
             @for (story of featuredStories(); track story._id; let i = $index) {
-              <a [routerLink]="['/blog', story.slug]" class="hero-story no-underline">
-                <span class="hero-story__index">0{{ i + 1 }}</span>
+              <a
+                [routerLink]="['/blog', story.slug]"
+                class="grid grid-cols-[auto_1fr] items-start gap-4 border-t border-slate-900/8 py-4 no-underline first:border-t-0 first:pt-1"
+              >
+                <span class="text-[0.8rem] font-bold tracking-[0.18em] text-[#d96c3f]"
+                  >0{{ i + 1 }}</span
+                >
                 <div>
-                  <h3>{{ story.title }}</h3>
-                  <p>{{ story.author.name }}</p>
+                  <h3
+                    class="mb-1 text-base leading-6 font-bold text-[#172033] hover:text-[#355d87]"
+                  >
+                    {{ story.title }}
+                  </h3>
+                  <p class="text-[0.92rem] text-[#677287]">{{ story.author.name }}</p>
                 </div>
               </a>
             }
@@ -56,16 +87,26 @@
     </div>
 
     @if (topTags().length) {
-      <section class="explore-section">
-        <div class="section-heading">
+      <section
+        class="mt-8 rounded-[2rem] border border-slate-900/10 bg-white/76 p-6 shadow-[0_18px_50px_rgba(23,32,51,0.06)] backdrop-blur"
+      >
+        <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <span class="section-heading__kicker">Trending now</span>
-            <h2>Topics gaining attention</h2>
+            <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#d96c3f]"
+              >Trending now</span
+            >
+            <h2
+              class="mt-2 text-[clamp(1.8rem,4vw,2.5rem)] leading-none font-extrabold tracking-[-0.04em] text-[#172033]"
+            >
+              Topics gaining attention
+            </h2>
           </div>
-          <p>Start with the conversations readers are already following.</p>
+          <p class="max-w-[22rem] text-[#677287] md:text-right">
+            Start with the conversations readers are already following.
+          </p>
         </div>
 
-        <div class="topic-cloud">
+        <div class="flex flex-wrap gap-3">
           @for (tag of topTags(); track tag._id) {
             <app-tag-chip [name]="tag.name" [slug]="tag.slug" />
           }
@@ -74,37 +115,59 @@
     }
 
     @if (spotlightCategories().length) {
-      <section class="explore-section">
-        <div class="section-heading">
+      <section
+        class="mt-8 rounded-[2rem] border border-slate-900/10 bg-white/76 p-6 shadow-[0_18px_50px_rgba(23,32,51,0.06)] backdrop-blur"
+      >
+        <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <span class="section-heading__kicker">Browse by collection</span>
-            <h2>Category spotlight</h2>
+            <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#d96c3f]"
+              >Browse by collection</span
+            >
+            <h2
+              class="mt-2 text-[clamp(1.8rem,4vw,2.5rem)] leading-none font-extrabold tracking-[-0.04em] text-[#172033]"
+            >
+              Category spotlight
+            </h2>
           </div>
-          <p>Distinct spaces to jump into whatever mood or subject fits.</p>
+          <p class="max-w-[22rem] text-[#677287] md:text-right">
+            Distinct spaces to jump into whatever mood or subject fits.
+          </p>
         </div>
 
-        <div class="category-grid">
+        <div class="grid gap-4 md:grid-cols-2">
           @for (cat of spotlightCategories(); track cat._id; let i = $index) {
-            <a [routerLink]="['/category', cat.slug]" class="category-card no-underline group">
-              <div class="category-card__media">
+            <a
+              [routerLink]="['/category', cat.slug]"
+              class="group overflow-hidden rounded-3xl border border-slate-900/8 bg-white shadow-[0_14px_32px_rgba(23,32,51,0.06)] transition hover:-translate-y-1 hover:border-[#355d87]/20 hover:shadow-[0_22px_38px_rgba(23,32,51,0.1)] no-underline"
+            >
+              <div
+                class="relative h-60 overflow-hidden bg-[linear-gradient(135deg,#fde4d8,#dbe8f5)]"
+              >
                 @if (cat.featureImage) {
                   <img
                     [src]="cat.featureImage"
                     [alt]="cat.name"
-                    class="category-card__image"
+                    class="h-full w-full object-cover transition duration-200 group-hover:scale-105"
                   />
                 } @else {
-                  <div class="category-card__fallback"></div>
+                  <div
+                    class="h-full w-full bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.7),transparent_26%),linear-gradient(135deg,#f0c6b3,#a7c1df)]"
+                  ></div>
                 }
-                <span class="category-card__index">0{{ i + 1 }}</span>
+                <span
+                  class="absolute top-4 left-4 rounded-full bg-white/88 px-3 py-2 text-[0.8rem] font-bold tracking-[0.18em] text-[#d96c3f]"
+                  >0{{ i + 1 }}</span
+                >
               </div>
 
-              <div class="category-card__body">
-                <h3>{{ cat.name }}</h3>
-                <p class="line-clamp-2">
+              <div class="p-5">
+                <h3 class="mb-2 text-xl font-extrabold text-[#172033]">{{ cat.name }}</h3>
+                <p class="line-clamp-2 leading-7 text-[#677287]">
                   {{ cat.description || 'Explore thoughtful writing curated around this theme.' }}
                 </p>
-                <span class="category-card__link">Explore collection</span>
+                <span class="mt-4 inline-flex text-[0.92rem] font-bold text-[#355d87]"
+                  >Explore collection</span
+                >
               </div>
             </a>
           }
@@ -112,18 +175,28 @@
       </section>
     }
 
-    <section class="explore-section">
-      <div class="section-heading">
+    <section
+      class="mt-8 rounded-[2rem] border border-slate-900/10 bg-white/76 p-6 shadow-[0_18px_50px_rgba(23,32,51,0.06)] backdrop-blur"
+    >
+      <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
-          <span class="section-heading__kicker">Recommended reading</span>
-          <h2>Stories worth your next scroll</h2>
+          <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#d96c3f]"
+            >Recommended reading</span
+          >
+          <h2
+            class="mt-2 text-[clamp(1.8rem,4vw,2.5rem)] leading-none font-extrabold tracking-[-0.04em] text-[#172033]"
+          >
+            Stories worth your next scroll
+          </h2>
         </div>
-        <p>A cleaner reading rail with room for headlines, authors, and context.</p>
+        <p class="max-w-[22rem] text-[#677287] md:text-right">
+          A cleaner reading rail with room for headlines, authors, and context.
+        </p>
       </div>
 
-      <div class="reading-panel">
+      <div class="rounded-3xl border border-slate-900/8 bg-white px-4 sm:px-5">
         @if (loading()) {
-          <div class="loading-state">
+          <div class="flex min-h-48 items-center justify-center">
             <p-progressSpinner strokeWidth="3" />
           </div>
         } @else {
@@ -131,7 +204,9 @@
             <app-blog-card [blog]="blog" />
           }
           @if (!blogs().length) {
-            <p class="empty-state">No stories to explore yet.</p>
+            <p class="flex min-h-48 items-center justify-center text-[#677287]">
+              No stories to explore yet.
+            </p>
           }
         }
       </div>

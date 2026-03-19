@@ -1,3 +1,19 @@
 :host {
   display: block;
 }
+
+.profile-header-card {
+  margin-bottom: 2.5rem;
+}
+
+.profile-empty-card {
+  padding: 6rem 0;
+  border-radius: 1.5rem;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  box-shadow: 0 8px 32px rgba(23, 32, 51, 0.08);
+  text-align: center;
+}
+:host {
+  display: block;
+}

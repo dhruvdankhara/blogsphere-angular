@@ -1,14 +1,16 @@
-<div>
-  <div class="flex items-center justify-between mb-6">
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-10">
     <div>
-      <h1 class="text-2xl font-bold text-gray-900">Manage Categories</h1>
-      <p class="text-sm text-gray-500 mt-1">Create and manage blog categories</p>
+      <h1 class="text-4xl md:text-5xl font-black text-[#172033] mb-2">Manage Categories</h1>
+      <p class="text-lg text-gray-500">Create and manage blog categories</p>
     </div>
     <p-button
       label="New Category"
-      icon="pi pi-plus"
+      icon="fa fa-plus"
       (click)="openCreateDialog()"
       severity="contrast"
+      size="large"
     />
   </div>
 
@@ -17,67 +19,80 @@
       <p-progressSpinner strokeWidth="3" />
     </div>
   } @else {
-    <p-table
-      [value]="categories()"
-      [paginator]="true"
-      [rows]="10"
-      [rowsPerPageOptions]="[10, 25, 50]"
-      [tableStyle]="{ 'min-width': '50rem' }"
-      stripedRows
+    <div
+      class="rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] overflow-hidden"
     >
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Image</th>
-          <th pSortableColumn="name">Name <p-sortIcon field="name" /></th>
-          <th>Slug</th>
-          <th>Description</th>
-          <th>Actions</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-category>
-        <tr>
-          <td>
-            @if (category.featureImage) {
-              <img
-                [src]="category.featureImage"
-                [alt]="category.name"
-                class="w-12 h-12 rounded-lg object-cover border border-gray-200"
-              />
-            } @else {
-              <div class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center">
-                <i class="pi pi-image text-gray-400"></i>
+      <p-table
+        [value]="categories()"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        stripedRows
+      >
+        <ng-template pTemplate="header">
+          <tr class="bg-gradient-to-r from-[#172033]/5 to-transparent">
+            <th class="text-[#172033] font-bold">Image</th>
+            <th pSortableColumn="name" class="text-[#172033] font-bold">
+              Name <p-sortIcon field="name" />
+            </th>
+            <th class="text-[#172033] font-bold">Slug</th>
+            <th class="text-[#172033] font-bold">Description</th>
+            <th class="text-[#172033] font-bold">Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-category>
+          <tr class="hover:bg-slate-900/3 transition-colors">
+            <td>
+              @if (category.featureImage) {
+                <img
+                  [src]="category.featureImage"
+                  [alt]="category.name"
+                  class="w-14 h-14 rounded-lg object-cover border border-slate-900/10 shadow-sm"
+                />
+              } @else {
+                <div
+                  class="w-14 h-14 rounded-lg bg-gradient-to-br from-slate-900/10 to-slate-900/5 flex items-center justify-center border border-slate-900/10"
+                >
+                  <i class="fa fa-image text-gray-400 text-xl"></i>
+                </div>
+              }
+            </td>
+            <td class="font-semibold text-[#172033]">{{ category.name }}</td>
+            <td class="text-gray-600">{{ category.slug }}</td>
+            <td class="text-gray-600 max-w-xs truncate">{{ category.description || '-' }}</td>
+            <td>
+              <div class="flex items-center gap-2">
+                <p-button
+                  icon="fa fa-pencil"
+                  severity="info"
+                  size="small"
+                  [outlined]="true"
+                  (click)="openEditDialog(category)"
+                />
+                <p-button
+                  icon="fa fa-trash"
+                  severity="danger"
+                  size="small"
+                  [outlined]="true"
+                  (click)="deleteCategory(category)"
+                />
               </div>
-            }
-          </td>
-          <td class="font-medium text-gray-900">{{ category.name }}</td>
-          <td class="text-gray-500">{{ category.slug }}</td>
-          <td class="text-gray-500 max-w-xs truncate">{{ category.description || '-' }}</td>
-          <td>
-            <div class="flex items-center gap-1">
-              <p-button
-                icon="pi pi-pencil"
-                [text]="true"
-                severity="info"
-                size="small"
-                (click)="openEditDialog(category)"
-              />
-              <p-button
-                icon="pi pi-trash"
-                [text]="true"
-                severity="danger"
-                size="small"
-                (click)="deleteCategory(category)"
-              />
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="5" class="text-center text-gray-400 py-10">No categories found</td>
-        </tr>
-      </ng-template>
-    </p-table>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="text-center py-16">
+              <div class="flex flex-col items-center justify-center">
+                <i class="fa fa-inbox text-5xl text-gray-300 mb-4"></i>
+                <p class="text-gray-400 font-medium">No categories found</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   }
 </div>
 
@@ -87,10 +102,11 @@
   [header]="dialogMode() === 'create' ? 'Create Category' : 'Edit Category'"
   [modal]="true"
   [style]="{ width: '500px' }"
+  headerStyleClass="bg-gradient-to-r from-[#172033] to-[#355d87] text-white border-0"
 >
-  <div class="flex flex-col gap-4 pt-2">
-    <div class="flex flex-col gap-1">
-      <label for="catName" class="text-sm font-medium text-gray-700">Name</label>
+  <div class="flex flex-col gap-5 pt-2">
+    <div class="flex flex-col gap-2">
+      <label for="catName" class="text-sm font-semibold text-[#172033]">Name</label>
       <input
         id="catName"
         type="text"
@@ -98,11 +114,12 @@
         [ngModel]="formName()"
         (ngModelChange)="onNameChange($event)"
         placeholder="Category name"
+        class="px-4 py-3 rounded-lg border border-slate-900/10 focus:outline-none focus:ring-2 focus:ring-[#355d87]/20"
       />
     </div>
 
-    <div class="flex flex-col gap-1">
-      <label for="catSlug" class="text-sm font-medium text-gray-700">Slug</label>
+    <div class="flex flex-col gap-2">
+      <label for="catSlug" class="text-sm font-semibold text-[#172033]">Slug</label>
       <input
         id="catSlug"
         type="text"
@@ -110,11 +127,12 @@
         [ngModel]="formSlug()"
         (ngModelChange)="formSlug.set($event)"
         placeholder="category-slug"
+        class="px-4 py-3 rounded-lg border border-slate-900/10 focus:outline-none focus:ring-2 focus:ring-[#355d87]/20"
       />
     </div>
 
-    <div class="flex flex-col gap-1">
-      <label for="catDesc" class="text-sm font-medium text-gray-700">Description</label>
+    <div class="flex flex-col gap-2">
+      <label for="catDesc" class="text-sm font-semibold text-[#172033]">Description</label>
       <textarea
         id="catDesc"
         pTextarea
@@ -122,20 +140,21 @@
         [ngModel]="formDescription()"
         (ngModelChange)="formDescription.set($event)"
         placeholder="Category description"
+        class="px-4 py-3 rounded-lg border border-slate-900/10 focus:outline-none focus:ring-2 focus:ring-[#355d87]/20"
       ></textarea>
     </div>
 
-    <div class="flex flex-col gap-1">
-      <label for="catImage" class="text-sm font-medium text-gray-700">Feature Image</label>
+    <div class="flex flex-col gap-2">
+      <label for="catImage" class="text-sm font-semibold text-[#172033]">Feature Image</label>
       <input
         id="catImage"
         type="file"
         accept="image/*"
         (change)="onFileSelect($event)"
-        class="text-sm text-gray-600"
+        class="px-4 py-3 text-sm text-gray-600 border border-slate-900/10 rounded-lg cursor-pointer"
       />
       @if (selectedFile()) {
-        <p class="text-xs text-gray-500 mt-1">Selected: {{ selectedFile()!.name }}</p>
+        <p class="text-xs text-gray-500 font-medium">Selected: {{ selectedFile()!.name }}</p>
       }
     </div>
   </div>
@@ -150,7 +169,7 @@
       />
       <p-button
         [label]="dialogMode() === 'create' ? 'Create' : 'Update'"
-        icon="pi pi-check"
+        icon="fa fa-check"
         (click)="saveCategory()"
         [loading]="saving()"
         severity="contrast"

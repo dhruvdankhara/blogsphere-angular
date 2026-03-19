@@ -7,11 +7,12 @@ import { Blog, Tag } from '../../../core/models/index';
 import { BlogCard } from '../../../shared/components/blog-card/blog-card';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { TabPanel, Tabs, Tab, TabList, TabPanels } from 'primeng/tabs';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterLink, BlogCard, ProgressSpinner, Tabs, Tab, TabList, TabPanels, TabPanel],
+  imports: [RouterLink, BlogCard, ProgressSpinner, Tabs, Tab, TabList, TabPanels, TabPanel, Button],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

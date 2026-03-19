@@ -1,13 +1,15 @@
-<div>
-  <div class="flex items-center justify-between mb-6">
-    <div>
-      <h1 class="text-2xl font-bold text-gray-900">Manage Reports</h1>
-      <p class="text-sm text-gray-500 mt-1">Review and manage reported content</p>
-    </div>
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="mb-10">
+    <h1 class="text-4xl md:text-5xl font-black text-[#172033] mb-2">Manage Reports</h1>
+    <p class="text-lg text-gray-500">Review and manage reported content</p>
   </div>
 
-  <div class="mb-4">
-    <div class="flex items-center gap-3">
+  <!-- Filter -->
+  <div class="mb-8">
+    <div
+      class="rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] p-6"
+    >
       <p-select
         [options]="statusOptions"
         [ngModel]="selectedStatus()"
@@ -23,73 +25,84 @@
       <p-progressSpinner strokeWidth="3" />
     </div>
   } @else {
-    <p-table
-      [value]="reports()"
-      [paginator]="true"
-      [rows]="10"
-      [rowsPerPageOptions]="[10, 25, 50]"
-      [tableStyle]="{ 'min-width': '70rem' }"
-      stripedRows
+    <div
+      class="rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] overflow-hidden"
     >
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Reported By</th>
-          <th>Blog Title</th>
-          <th>Reason</th>
-          <th>Description</th>
-          <th>Status</th>
-          <th pSortableColumn="createdAt">Date <p-sortIcon field="createdAt" /></th>
-          <th style="min-width: 260px">Actions</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-report>
-        <tr>
-          <td class="text-gray-700">{{ report.reportedBy?.name || 'Unknown' }}</td>
-          <td class="font-medium text-gray-900 max-w-xs truncate">
-            {{ report.blog?.title || 'Deleted Blog' }}
-          </td>
-          <td class="text-gray-600">{{ report.reason }}</td>
-          <td class="text-gray-500 max-w-xs truncate">{{ report.description || '-' }}</td>
-          <td>
-            <p-tag [value]="report.status" [severity]="getStatusSeverity(report.status)" />
-          </td>
-          <td class="text-gray-500">{{ report.createdAt | date: 'MMM d, y' }}</td>
-          <td>
-            <div class="flex items-center gap-2">
-              <p-select
-                [options]="statusUpdateOptions"
-                [ngModel]="report.status"
-                (ngModelChange)="onStatusChange(report._id, $event)"
-                [style]="{ width: '140px' }"
-              />
-              <p-button
-                icon="fa fa-ban"
-                [text]="true"
-                severity="danger"
-                size="small"
-                [disabled]="!report.blog?.slug"
-                pTooltip="Remove blog post"
-                tooltipPosition="top"
-                (click)="removeBlog(report)"
-              />
-              <p-button
-                icon="fa fa-trash"
-                [text]="true"
-                severity="secondary"
-                size="small"
-                pTooltip="Delete report only"
-                tooltipPosition="top"
-                (click)="deleteReport(report)"
-              />
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="7" class="text-center text-gray-400 py-10">No reports found</td>
-        </tr>
-      </ng-template>
-    </p-table>
+      <p-table
+        [value]="reports()"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [tableStyle]="{ 'min-width': '70rem' }"
+        stripedRows
+      >
+        <ng-template pTemplate="header">
+          <tr class="bg-gradient-to-r from-[#172033]/5 to-transparent">
+            <th class="text-[#172033] font-bold">Reported By</th>
+            <th class="text-[#172033] font-bold">Blog Title</th>
+            <th class="text-[#172033] font-bold">Reason</th>
+            <th class="text-[#172033] font-bold">Description</th>
+            <th class="text-[#172033] font-bold">Status</th>
+            <th pSortableColumn="createdAt" class="text-[#172033] font-bold">
+              Date <p-sortIcon field="createdAt" />
+            </th>
+            <th style="min-width: 280px" class="text-[#172033] font-bold">Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-report>
+          <tr class="hover:bg-slate-900/3 transition-colors">
+            <td class="text-gray-700 font-medium">{{ report.reportedBy?.name || 'Unknown' }}</td>
+            <td class="font-semibold text-[#172033] max-w-xs truncate">
+              {{ report.blog?.title || 'Deleted Blog' }}
+            </td>
+            <td class="text-gray-700 font-medium">{{ report.reason }}</td>
+            <td class="text-gray-600 max-w-xs truncate">{{ report.description || '-' }}</td>
+            <td>
+              <p-tag [value]="report.status" [severity]="getStatusSeverity(report.status)" />
+            </td>
+            <td class="text-gray-600">{{ report.createdAt | date: 'MMM d, y' }}</td>
+            <td>
+              <div class="flex items-center gap-2 flex-wrap">
+                <p-select
+                  [options]="statusUpdateOptions"
+                  [ngModel]="report.status"
+                  (ngModelChange)="onStatusChange(report._id, $event)"
+                  [style]="{ width: '140px' }"
+                />
+                <p-button
+                  icon="fa fa-ban"
+                  severity="danger"
+                  size="small"
+                  [outlined]="true"
+                  [disabled]="!report.blog?.slug"
+                  pTooltip="Remove blog post"
+                  tooltipPosition="top"
+                  (click)="removeBlog(report)"
+                />
+                <p-button
+                  icon="fa fa-trash"
+                  severity="secondary"
+                  size="small"
+                  [outlined]="true"
+                  pTooltip="Delete report only"
+                  tooltipPosition="top"
+                  (click)="deleteReport(report)"
+                />
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="text-center py-16">
+              <div class="flex flex-col items-center justify-center">
+                <i class="fa fa-inbox text-5xl text-gray-300 mb-4"></i>
+                <p class="text-gray-400 font-medium">No reports found</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   }
 </div>

@@ -1,3 +1,25 @@
 :host {
   display: block;
 }
+
+.user-layout-nav {
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.user-layout-nav:hover {
+  border-color: #355d87;
+  box-shadow: 0 8px 32px rgba(53, 93, 135, 0.1);
+}
+
+.sidebar-card {
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+
+.sidebar-card:hover {
+  box-shadow: 0 12px 40px rgba(23, 32, 51, 0.12);
+  border-color: #355d87;
+}

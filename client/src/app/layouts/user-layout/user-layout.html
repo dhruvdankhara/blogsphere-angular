@@ -1,110 +1,135 @@
 <div class="min-h-screen bg-white">
   <!-- Top bar / Navbar -->
-  <header class="sticky top-0 z-50 bg-white border-b border-gray-200">
-    <div class="max-w-screen-2xl mx-auto px-4 flex items-center justify-between h-14">
-      <a routerLink="/" class="text-xl font-bold text-gray-900 no-underline"> BlogSphere </a>
-      <div class="flex items-center gap-3">
-        <a routerLink="/search" class="text-gray-500 hover:text-gray-900 p-1">
-          <i class="fa-solid fa-magnifying-glass text-lg"></i>
-        </a>
+  <header class="sticky top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
+    <div class="mx-auto max-w-7xl">
+      <div
+        class="flex items-center justify-between gap-3 rounded-[1.6rem] border border-slate-900/8 bg-white/82 px-3 py-3 shadow-[0_18px_40px_rgba(17,24,39,0.08)] backdrop-blur sm:rounded-full sm:px-5"
+      >
         <a
-          routerLink="/create"
-          class="flex items-center gap-1.5 text-gray-600 hover:text-gray-900 no-underline"
+          routerLink="/"
+          class="inline-flex min-w-0 items-center gap-3 no-underline"
+          aria-label="BlogSphere home"
         >
-          <i class="fa-regular fa-pen-to-square text-lg"></i>
-          <span class="hidden sm:inline text-sm">Write</span>
-        </a>
-        @if (auth.isAdmin()) {
-          <a routerLink="/admin" class="text-gray-500 hover:text-gray-900">
-            <i class="fa-solid fa-shield-halved text-lg"></i>
-          </a>
-        }
-        <!-- Avatar with custom dropdown -->
-        <div class="relative" (click)="$event.stopPropagation()">
-          <p-avatar
-            [image]="auth.user()?.avatar || ''"
-            [label]="auth.user()?.avatar ? '' : auth.user()?.name?.[0] || 'U'"
-            shape="circle"
-            class="cursor-pointer"
-            (click)="toggleAvatarMenu($event)"
-            styleClass="bg-gray-200 text-gray-700"
-            size="normal"
-          />
-
-          <!-- Custom Avatar Dropdown Menu -->
-          @if (showAvatarMenu()) {
-            <div
-              class="absolute right-0 top-12 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50 py-2"
+          <span
+            class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[linear-gradient(135deg,#172033,#355d87)] text-sm font-extrabold tracking-[-0.04em] text-white"
+          >
+            <img
+              src="https://res.cloudinary.com/dhruvdankhara/image/upload/v1739703455/s6bzxwg0bng21j0kvcr1.png"
+              alt=""
+              class="rounded-full"
+            />
+          </span>
+          <span class="hidden min-[561px]:flex min-[561px]:flex-col min-[561px]:leading-tight">
+            <strong class="text-2xl font-extrabold tracking-[-0.03em] text-[#172033]"
+              >BlogSphere</strong
             >
-              <!-- User info -->
-              <div class="px-4 py-3 flex items-center gap-3">
-                <p-avatar
-                  [image]="auth.user()?.avatar || ''"
-                  [label]="auth.user()?.avatar ? '' : auth.user()?.name?.[0] || 'U'"
-                  shape="circle"
-                  size="large"
-                  styleClass="bg-gray-200 text-gray-700"
-                />
-                <div>
-                  <p class="font-medium text-gray-900 text-sm">{{ auth.user()?.name }}</p>
-                  <a
-                    [routerLink]="getProfileRoute()"
-                    class="text-xs text-green-600 hover:text-green-700 no-underline"
-                    (click)="closeAvatarMenu()"
+          </span>
+        </a>
+        <div class="flex items-center gap-3">
+          <a
+            routerLink="/search"
+            class="text-gray-500 hover:text-[#355d87] p-1 text-lg transition-colors"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </a>
+          <a
+            routerLink="/create"
+            class="flex items-center gap-1.5 text-gray-600 hover:text-[#355d87] no-underline text-lg transition-colors"
+          >
+            <i class="fa-regular fa-pen-to-square"></i>
+            <span class="hidden sm:inline text-sm">Write</span>
+          </a>
+          @if (auth.isAdmin()) {
+            <a
+              routerLink="/admin"
+              class="text-gray-500 hover:text-[#d96c3f] text-lg transition-colors"
+            >
+              <i class="fa-solid fa-shield-halved"></i>
+            </a>
+          }
+          <!-- Avatar with custom dropdown -->
+          <div class="relative" (click)="$event.stopPropagation()">
+            <p-avatar
+              [image]="auth.user()?.avatar || ''"
+              [label]="auth.user()?.avatar ? '' : auth.user()?.name?.[0] || 'U'"
+              shape="circle"
+              class="cursor-pointer"
+              (click)="toggleAvatarMenu($event)"
+              styleClass="bg-gray-200 text-gray-700"
+              size="normal"
+            />
+
+            <!-- Custom Avatar Dropdown Menu -->
+            @if (showAvatarMenu()) {
+              <div
+                class="absolute right-0 top-12 w-72 bg-white rounded-2xl shadow-[0_16px_48px_rgba(23,32,51,0.12)] border border-slate-900/10 z-50 py-3 overflow-hidden"
+              >
+                <!-- User info -->
+                <div class="px-4 py-4 flex items-center gap-3 border-b border-slate-900/10">
+                  <p-avatar
+                    [image]="auth.user()?.avatar || ''"
+                    [label]="auth.user()?.avatar ? '' : auth.user()?.name?.[0] || 'U'"
+                    shape="circle"
+                    size="large"
+                    styleClass="bg-gradient-to-br from-gray-200 to-gray-400 text-gray-700 border border-slate-900/10"
+                  />
+                  <div>
+                    <p class="font-semibold text-[#172033] text-base">{{ auth.user()?.name }}</p>
+                    <a
+                      [routerLink]="getProfileRoute()"
+                      class="text-xs text-[#355d87] hover:text-[#d96c3f] no-underline font-medium"
+                      (click)="closeAvatarMenu()"
+                    >
+                      View profile
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Settings -->
+                <a
+                  routerLink="/settings"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 no-underline transition-colors"
+                  (click)="closeAvatarMenu()"
+                >
+                  <i class="fa-solid fa-gear text-base text-[#355d87]"></i>
+                  Settings
+                </a>
+
+                <!-- Sign out & email -->
+                <div class="border-t border-slate-900/10 my-1 px-4 py-3">
+                  <button
+                    class="w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg transition-all duration-300 font-medium"
+                    (click)="logout(); closeAvatarMenu()"
                   >
-                    View profile
-                  </a>
+                    Sign out
+                  </button>
+                  <p class="text-xs text-gray-400 mt-2">{{ getMaskedEmail() }}</p>
+                </div>
+
+                <!-- Footer links -->
+                <div class="px-4 py-3 flex flex-wrap gap-x-3 gap-y-2 border-t border-slate-900/10">
+                  <a
+                    routerLink="/about"
+                    class="text-xs text-gray-500 hover:text-[#355d87] no-underline font-medium"
+                    (click)="closeAvatarMenu()"
+                    >About</a
+                  >
+                  <a
+                    routerLink="/terms"
+                    class="text-xs text-gray-500 hover:text-[#355d87] no-underline font-medium"
+                    (click)="closeAvatarMenu()"
+                    >Terms</a
+                  >
+                  <a
+                    routerLink="/privacy"
+                    class="text-xs text-gray-400 hover:text-gray-600 no-underline"
+                    (click)="closeAvatarMenu()"
+                    >Privacy</a
+                  >
                 </div>
               </div>
-
-              <div class="border-t border-gray-100 my-1"></div>
-
-              <!-- Settings -->
-              <a
-                routerLink="/settings"
-                class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 no-underline"
-                (click)="closeAvatarMenu()"
-              >
-                <i class="fa-solid fa-gear text-base"></i>
-                Settings
-              </a>
-
-              <div class="border-t border-gray-100 my-1"></div>
-
-              <!-- Sign out & email -->
-              <button
-                class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-200/20 transition-all duration-300"
-                (click)="logout(); closeAvatarMenu()"
-              >
-                Sign out
-              </button>
-              <p class="px-4 py-1 text-xs text-gray-400">{{ getMaskedEmail() }}</p>
-
-              <div class="border-t border-gray-100 my-1"></div>
-
-              <!-- Footer links -->
-              <div class="px-4 py-2 flex flex-wrap gap-x-3 gap-y-1">
-                <a
-                  routerLink="/about"
-                  class="text-xs text-gray-400 hover:text-gray-600 no-underline"
-                  (click)="closeAvatarMenu()"
-                  >About</a
-                >
-                <a
-                  routerLink="/terms"
-                  class="text-xs text-gray-400 hover:text-gray-600 no-underline"
-                  (click)="closeAvatarMenu()"
-                  >Terms</a
-                >
-                <a
-                  routerLink="/privacy"
-                  class="text-xs text-gray-400 hover:text-gray-600 no-underline"
-                  (click)="closeAvatarMenu()"
-                  >Privacy</a
-                >
-              </div>
-            </div>
-          }
+            }
+          </div>
         </div>
       </div>
     </div>
@@ -113,89 +138,105 @@
   <div class="max-w-screen-2xl mx-auto flex">
     <!-- Left Sidebar -->
     <aside
-      class="hidden lg:flex flex-col w-60 border-r border-gray-100 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto"
+      class="hidden lg:flex flex-col w-80 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto shrink-0 p-4"
     >
-      <!-- Navigation -->
-      <nav class="flex flex-col gap-1 p-4">
+      <!-- Navigation Card -->
+      <nav
+        class="flex flex-col gap-1 rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] p-4 mb-6"
+      >
         @for (item of navItems; track item.label) {
           <a
             [routerLink]="item.route"
-            routerLinkActive="text-gray-900 font-semibold bg-gray-200"
+            routerLinkActive="bg-[#172033] text-white shadow-md"
             [routerLinkActiveOptions]="item.route === '/' ? { exact: true } : { exact: false }"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 no-underline transition-colors"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 no-underline transition-all duration-200 font-medium"
           >
-            <i [class]="item.icon + ' text-xl'"></i>
+            <i [class]="item.icon + ' text-lg'"></i>
             <span>{{ item.label }}</span>
           </a>
         }
       </nav>
 
       <!-- Following Section -->
-      <div class="border-t border-gray-100 mt-2 pt-4 px-4 flex-1 overflow-y-auto">
-        <div class="flex items-center gap-2 mb-3">
-          <i class="fa-solid fa-user-group text-sm text-gray-400"></i>
-          <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider"
-            >Following</span
-          >
+      <div
+        class="rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] p-4 flex-1 overflow-y-auto"
+      >
+        <div class="flex items-center gap-2 mb-4">
+          <i class="fa-solid fa-user-group text-lg text-[#d96c3f]"></i>
+          <span class="text-sm font-bold text-[#172033] uppercase tracking-wider">Following</span>
         </div>
         @for (user of followingUsers(); track user._id) {
           <a
             [routerLink]="['/profile', user.username]"
-            class="flex items-center gap-2.5 py-1.5 text-gray-600 hover:text-gray-900 no-underline transition-colors"
+            class="flex items-center gap-3 py-2.5 px-2 rounded-lg text-gray-600 hover:bg-gray-50 no-underline transition-colors"
           >
             <p-avatar
               [image]="user.avatar || ''"
               [label]="user.avatar ? '' : user.name[0] || 'U'"
               shape="circle"
-              styleClass="bg-gray-200 text-gray-600"
+              styleClass="bg-gradient-to-br from-gray-200 to-gray-400 text-gray-700 border border-slate-900/10"
               size="normal"
             />
-            <span class="text-sm truncate">{{ user.name }}</span>
+            <span class="text-sm font-medium truncate text-[#355d87]">{{ user.name }}</span>
           </a>
         }
         @if (!followingUsers().length) {
-          <p class="text-xs text-gray-400">Not following anyone yet</p>
+          <p class="text-sm text-gray-400 text-center py-6 font-medium">Not following anyone yet</p>
         }
         <a
           routerLink="/explore"
-          class="flex items-center gap-2 mt-3 text-xs text-gray-500 hover:text-gray-700 no-underline"
+          class="flex items-center justify-center gap-2 mt-4 py-2.5 px-3 rounded-lg text-sm text-white bg-[#d96c3f] hover:bg-[#c95a31] no-underline transition-colors font-semibold"
         >
-          <i class="fa-solid fa-plus text-xs"></i>
-          Find writers and publications to follow
+          <i class="fa-solid fa-plus text-sm"></i>
+          Find Writers
         </a>
       </div>
     </aside>
 
     <!-- Center Content -->
-    <main class="flex-1 min-w-0 p-3 md:p-5 md:pb-16">
+    <main class="flex-1 min-w-0 px-4 py-6 md:px-8 md:pb-16">
       <router-outlet />
     </main>
   </div>
 
   <!-- Mobile Bottom Nav -->
-  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
-    <div class="flex justify-around items-center h-14">
+  <nav
+    class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-900/10 z-50 shadow-[0_-8px_24px_rgba(23,32,51,0.08)]"
+  >
+    <div class="flex justify-around items-center h-16">
       <a
         routerLink="/"
-        routerLinkActive="text-gray-900"
+        routerLinkActive="text-[#355d87]"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="text-gray-400 p-2"
+        class="text-gray-400 hover:text-[#355d87] p-2 transition-colors text-xl"
       >
-        <i class="fa-solid fa-house text-xl"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
-      <a routerLink="/search" routerLinkActive="text-gray-900" class="text-gray-400 p-2">
-        <i class="fa-solid fa-magnifying-glass text-xl"></i>
+      <a
+        routerLink="/search"
+        routerLinkActive="text-[#355d87]"
+        class="text-gray-400 hover:text-[#355d87] p-2 transition-colors text-xl"
+      >
+        <i class="fa-solid fa-magnifying-glass"></i>
       </a>
-      <a routerLink="/create" routerLinkActive="text-gray-900" class="text-gray-400 p-2">
-        <i class="fa-regular fa-square-plus text-xl"></i>
+      <a
+        routerLink="/create"
+        routerLinkActive="text-[#355d87]"
+        class="text-gray-400 hover:text-[#355d87] p-2 transition-colors text-xl"
+      >
+        <i class="fa-regular fa-square-plus"></i>
       </a>
-      <a routerLink="/library" routerLinkActive="text-gray-900" class="text-gray-400 p-2">
-        <i class="fa-regular fa-bookmark text-xl"></i>
+      <a
+        routerLink="/library"
+        routerLinkActive="text-[#355d87]"
+        class="text-gray-400 hover:text-[#355d87] p-2 transition-colors text-xl"
+      >
+        <i class="fa-regular fa-bookmark"></i>
       </a>
       <a
         [routerLink]="getProfileRoute()"
-        routerLinkActive="text-gray-900"
-        class="text-gray-400 p-2"
+        routerLinkActive="text-[#355d87]"
+        class="text-gray-400 hover:text-[#355d87] p-2 transition-colors text-xl"
       >
         <i class="fa-regular fa-user text-xl"></i>
       </a>

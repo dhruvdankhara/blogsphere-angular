@@ -1,10 +1,17 @@
-<div class="min-h-[70vh] flex items-center justify-center px-4">
-  <div class="text-center">
-    <h1 class="text-8xl font-bold text-gray-200 mb-4">404</h1>
-    <h2 class="text-2xl font-bold text-gray-900 mb-2">Page not found</h2>
-    <p class="text-gray-500 mb-8">The page you are looking for does not exist or has been moved.</p>
+<div class="min-h-[70vh] flex items-center justify-center px-4 bg-gray-50">
+  <div
+    class="not-found-card rounded-2xl border border-slate-900/10 bg-white shadow-[0_8px_32px_rgba(23,32,51,0.08)] p-12 text-center max-w-lg"
+  >
+    <div class="flex items-center justify-center mb-6">
+      <i class="fa fa-exclamation-circle text-6xl text-[#d96c3f] mr-3"></i>
+      <h1 class="text-8xl font-black text-gray-200">404</h1>
+    </div>
+    <h2 class="text-3xl font-bold text-[#172033] mb-4">Page not found</h2>
+    <p class="text-lg text-gray-500 mb-8">
+      The page you are looking for does not exist or has been moved.
+    </p>
     <a routerLink="/">
-      <p-button label="Go Home" severity="contrast" icon="pi pi-home" />
+      <p-button label="Go Home" severity="contrast" icon="fa fa-home" />
     </a>
   </div>
 </div>

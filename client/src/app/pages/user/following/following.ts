@@ -4,11 +4,12 @@ import { BlogService } from '../../../core/services/blog';
 import { Blog } from '../../../core/models/index';
 import { BlogCard } from '../../../shared/components/blog-card/blog-card';
 import { ProgressSpinner } from 'primeng/progressspinner';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-following',
   standalone: true,
-  imports: [RouterLink, BlogCard, ProgressSpinner],
+  imports: [RouterLink, BlogCard, ProgressSpinner, Button],
   templateUrl: './following.html',
   styleUrl: './following.css',
 })
