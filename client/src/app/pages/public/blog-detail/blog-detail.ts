@@ -5,7 +5,6 @@ import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { BlogService } from '../../../core/services/blog';
 import { BookmarkService } from '../../../core/services/bookmark';
-import { UserService } from '../../../core/services/user';
 import { AuthService } from '../../../core/services/auth';
 import { ApiResponse, BlogDetail as BlogDetailModel, Comment } from '../../../core/models/index';
 import { TagChip } from '../../../shared/components/tag-chip/tag-chip';
@@ -188,7 +187,9 @@ export class BlogDetail implements OnInit {
       const _ = this.sanitizedContent();
       setTimeout(() => {
         this.el.nativeElement.querySelectorAll('pre').forEach((block: HTMLElement) => {
-          hljs.highlightElement(block);
+          hljs.highlight(block.textContent || '', {
+            language: block.getAttribute('data-lang') || 'plaintext',
+          });
         });
       }, 0);
     });

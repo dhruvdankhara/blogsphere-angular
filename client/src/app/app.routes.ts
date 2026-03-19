@@ -79,10 +79,7 @@ export const routes: Routes = [
         path: 'privacy',
         loadComponent: () => import('./pages/public/privacy/privacy').then((m) => m.Privacy),
       },
-      {
-        path: 'contact',
-        loadComponent: () => import('./pages/public/contact/contact').then((m) => m.Contact),
-      },
+
       {
         path: 'membership',
         loadComponent: () =>
@@ -146,10 +143,7 @@ export const routes: Routes = [
         path: 'privacy',
         loadComponent: () => import('./pages/public/privacy/privacy').then((m) => m.Privacy),
       },
-      {
-        path: 'contact',
-        loadComponent: () => import('./pages/public/contact/contact').then((m) => m.Contact),
-      },
+
       {
         path: 'membership',
         loadComponent: () =>
