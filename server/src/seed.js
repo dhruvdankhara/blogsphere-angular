@@ -65,7 +65,7 @@ const seed = async () => {
       email: "admin@blogsphere.com",
       password: hashedPassword,
       role: "ADMIN",
-      gender: "MALE",
+      gender: "male",
       bio: "Platform administrator for BlogSphere.",
       avatar:
         "https://api.dicebear.com/9.x/avataaars/svg?seed=admin&backgroundColor=b6e3f4",
@@ -76,7 +76,7 @@ const seed = async () => {
       email: "alice@blogsphere.com",
       password: hashedPassword,
       role: "USER",
-      gender: "FEMALE",
+      gender: "female",
       bio: "Tech enthusiast and frontend developer. I love sharing what I learn about JavaScript and modern frameworks.",
       avatar:
         "https://api.dicebear.com/9.x/avataaars/svg?seed=alicejohnson&backgroundColor=ffd5dc",
@@ -87,7 +87,7 @@ const seed = async () => {
       email: "bob@blogsphere.com",
       password: hashedPassword,
       role: "USER",
-      gender: "MALE",
+      gender: "male",
       bio: "Full-stack developer with a passion for Node.js and open source. Building cool stuff one commit at a time.",
       avatar:
         "https://api.dicebear.com/9.x/avataaars/svg?seed=bobwilliams&backgroundColor=c0aede",
@@ -98,7 +98,7 @@ const seed = async () => {
       email: "carol@blogsphere.com",
       password: hashedPassword,
       role: "USER",
-      gender: "FEMALE",
+      gender: "female",
       bio: "UI/UX designer and creative writer. Coffee addict. Firm believer that beautiful design and great code go hand in hand.",
       avatar:
         "https://api.dicebear.com/9.x/avataaars/svg?seed=carolsmith&backgroundColor=ffdfbf",
@@ -109,7 +109,7 @@ const seed = async () => {
       email: "david@blogsphere.com",
       password: hashedPassword,
       role: "USER",
-      gender: "MALE",
+      gender: "male",
       bio: "DevOps engineer specialising in Kubernetes and cloud-native infrastructure. K8s or bust.",
       avatar:
         "https://api.dicebear.com/9.x/avataaars/svg?seed=davidlee&backgroundColor=d1f0b1",
@@ -120,7 +120,7 @@ const seed = async () => {
       email: "emma@blogsphere.com",
       password: hashedPassword,
       role: "USER",
-      gender: "FEMALE",
+      gender: "female",
       bio: "Data scientist and machine learning enthusiast. Python, pandas and a good dataset are all I need.",
       avatar:
         "https://api.dicebear.com/9.x/avataaars/svg?seed=emmabrown&backgroundColor=b6e3f4",
