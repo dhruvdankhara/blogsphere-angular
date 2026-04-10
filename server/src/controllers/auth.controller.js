@@ -136,9 +136,9 @@ export const resetPassword = async (req, res) => {
 
 export const updateUser = asyncHandler(async (req, res) => {
   const { user } = req;
-  const { name, username, email, gender } = req.body;
+  const { name, username, email, gender, bio } = req.body;
 
-  await updateUserSchema.validate({ name, username, email, gender });
+  await updateUserSchema.validate({ name, username, email, gender, bio });
 
   const isEmailTaken = await User.findOne({ email });
   if (isEmailTaken && isEmailTaken._id.toString() !== user._id.toString()) {
@@ -157,6 +157,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   user.username = username || user.username;
   user.email = email || user.email;
   user.gender = gender || user.gender;
+  user.bio = bio || user.bio;
 
   await user.save();
 

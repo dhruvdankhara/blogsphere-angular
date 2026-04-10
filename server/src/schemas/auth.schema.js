@@ -31,4 +31,5 @@ export const updateUserSchema = Yup.object().shape({
   email: Yup.string().email(),
   username: Yup.string().lowercase(),
   gender: Yup.string(),
+  bio: Yup.string().optional(),
 });
