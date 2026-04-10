@@ -1,72 +1,8 @@
 <div class="min-h-full">
   <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-    <div class="mb-8 grid gap-6">
-      <div
-        class="rounded-4xl border border-slate-900/10 p-8 shadow-[0_24px_60px_rgba(23,32,51,0.08)] backdrop-blur"
-      >
-        <span
-          class="inline-flex text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#d96c3f]"
-          >Curated discovery</span
-        >
-        <h1
-          class="mt-4 mb-4 text-[clamp(3rem,8vw,5.4rem)] leading-[0.95] font-extrabold tracking-[-0.06em] text-[#172033]"
-        >
-          Find the stories,
-          <span class="block text-[#355d87]">topics, and voices</span>
-          worth staying with.
-        </h1>
-
-        <div class="mt-8 grid gap-3 sm:grid-cols-3" aria-label="Explore overview">
-          <div class="rounded-2xl border border-slate-900/8 bg-white/70 px-4 py-4">
-            <strong class="block text-2xl font-extrabold text-[#172033]">{{
-              blogs().length
-            }}</strong>
-            <span class="text-sm text-[#677287]">Stories</span>
-          </div>
-          <div class="rounded-2xl border border-slate-900/8 bg-white/70 px-4 py-4">
-            <strong class="block text-2xl font-extrabold text-[#172033]">{{
-              categories().length
-            }}</strong>
-            <span class="text-sm text-[#677287]">Collections</span>
-          </div>
-          <div class="rounded-2xl border border-slate-900/8 bg-white/70 px-4 py-4">
-            <strong class="block text-2xl font-extrabold text-[#172033]">{{
-              tags().length
-            }}</strong>
-            <span class="text-sm text-[#677287]">Topics</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    @if (topTags().length) {
-      <section
-        class="mt-8 rounded-4xl border border-slate-900/10 bg-white/76 p-6 shadow-[0_18px_50px_rgba(23,32,51,0.06)] backdrop-blur"
-      >
-        <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div>
-            <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#d96c3f]"
-              >Trending now</span
-            >
-            <h2
-              class="mt-2 text-[clamp(1.8rem,4vw,2.5rem)] leading-none font-extrabold tracking-[-0.04em] text-[#172033]"
-            >
-              Topics gaining attention
-            </h2>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap gap-3">
-          @for (tag of topTags(); track tag._id) {
-            <app-tag-chip [name]="tag.name" [slug]="tag.slug" />
-          }
-        </div>
-      </section>
-    }
-
     @if (spotlightCategories().length) {
       <section
-        class="mt-8 rounded-4xl border border-slate-900/10 bg-white/76 p-6 shadow-[0_18px_50px_rgba(23,32,51,0.06)] backdrop-blur"
+        class="rounded-4xl border border-slate-900/10 bg-white/76 p-6 shadow-[0_18px_50px_rgba(23,32,51,0.06)] backdrop-blur"
       >
         <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
@@ -81,7 +17,7 @@
           </div>
         </div>
 
-        <div class="grid gap-4 md:grid-cols-2">
+        <div class="grid gap-4 md:grid-cols-3">
           @for (cat of spotlightCategories(); track cat._id; let i = $index) {
             <a
               [routerLink]="['/category', cat.slug]"
@@ -94,7 +30,7 @@
                   <img
                     [src]="cat.featureImage"
                     [alt]="cat.name"
-                    class="h-full w-full object-cover transition duration-200 group-hover:scale-105"
+                    class="h-full w-full object-cover transition duration-200"
                   />
                 } @else {
                   <div
@@ -118,6 +54,26 @@
       </section>
     }
 
+    @if (topTags().length) {
+      <section
+        class="mt-8 rounded-4xl border border-slate-900/10 bg-white/76 p-6 shadow-[0_18px_50px_rgba(23,32,51,0.06)] backdrop-blur"
+      >
+        <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#d96c3f]"
+              >Trending Topics</span
+            >
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          @for (tag of topTags(); track tag._id) {
+            <app-tag-chip [name]="tag.name" [slug]="tag.slug" />
+          }
+        </div>
+      </section>
+    }
+
     <section
       class="mt-8 rounded-4xl border border-slate-900/10 bg-white/76 p-6 shadow-[0_18px_50px_rgba(23,32,51,0.06)] backdrop-blur"
     >
@@ -129,7 +85,7 @@
           <h2
             class="mt-2 text-[clamp(1.8rem,4vw,2.5rem)] leading-none font-extrabold tracking-[-0.04em] text-[#172033]"
           >
-            Stories worth your next scroll
+            Blogs to explore
           </h2>
         </div>
       </div>

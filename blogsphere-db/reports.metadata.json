@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"reportedBy":{"$numberInt":"1"},"blogId":{"$numberInt":"1"}},"name":"reportedBy_1_blogId_1","background":true,"unique":true}],"uuid":"3a1df0144cd3421ea31ded023171859b","collectionName":"reports","type":"collection"}

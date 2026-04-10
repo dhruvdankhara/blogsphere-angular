@@ -7,7 +7,7 @@
       <img
         [src]="blog().featureImage"
         [alt]="blog().title"
-        class="w-32 h-32 sm:w-40 sm:h-32 object-cover rounded-2xl border border-slate-900/10 shadow-md group-hover:scale-105 transition-transform"
+        class="w-32 h-32 sm:w-40 sm:h-32 object-cover rounded-2xl border border-slate-900/10 shadow-md transition-transform"
       />
     </a>
   }
@@ -37,7 +37,7 @@
       >
         {{ blog().title }}
       </h2>
-      <p class="text-gray-500 text-[1rem] line-clamp-2 mb-4">
+      <p class="text-gray-500 text-[1rem] line-clamp-2 mb-4 truncate">
         {{ getContentPreview() }}
       </p>
     </a>

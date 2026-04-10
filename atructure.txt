@@ -1,0 +1,250 @@
+.
+├── client
+│   ├── README.md
+│   ├── angular.json
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   └── favicon.ico
+│   ├── src
+│   │   ├── app
+│   │   │   ├── app.config.ts
+│   │   │   ├── app.css
+│   │   │   ├── app.html
+│   │   │   ├── app.routes.ts
+│   │   │   ├── app.spec.ts
+│   │   │   ├── app.ts
+│   │   │   ├── core
+│   │   │   │   ├── guards
+│   │   │   │   │   ├── admin-guard.ts
+│   │   │   │   │   ├── auth-guard.ts
+│   │   │   │   │   ├── auth-match-guard.ts
+│   │   │   │   │   └── guest-guard.ts
+│   │   │   │   ├── interceptors
+│   │   │   │   │   └── auth-interceptor.ts
+│   │   │   │   ├── models
+│   │   │   │   │   └── index.ts
+│   │   │   │   └── services
+│   │   │   │       ├── admin.ts
+│   │   │   │       ├── auth.ts
+│   │   │   │       ├── blog.ts
+│   │   │   │       ├── bookmark.ts
+│   │   │   │       ├── category.ts
+│   │   │   │       ├── report.ts
+│   │   │   │       ├── tag.ts
+│   │   │   │       └── user.ts
+│   │   │   ├── layouts
+│   │   │   │   ├── admin-layout
+│   │   │   │   │   ├── admin-layout.css
+│   │   │   │   │   ├── admin-layout.html
+│   │   │   │   │   └── admin-layout.ts
+│   │   │   │   ├── public-layout
+│   │   │   │   │   ├── public-layout.css
+│   │   │   │   │   ├── public-layout.html
+│   │   │   │   │   └── public-layout.ts
+│   │   │   │   └── user-layout
+│   │   │   │       ├── user-layout.css
+│   │   │   │       ├── user-layout.html
+│   │   │   │       └── user-layout.ts
+│   │   │   ├── pages
+│   │   │   │   ├── admin
+│   │   │   │   │   ├── admin-dashboard
+│   │   │   │   │   │   ├── admin-dashboard.css
+│   │   │   │   │   │   ├── admin-dashboard.html
+│   │   │   │   │   │   └── admin-dashboard.ts
+│   │   │   │   │   ├── manage-blogs
+│   │   │   │   │   │   ├── manage-blogs.css
+│   │   │   │   │   │   ├── manage-blogs.html
+│   │   │   │   │   │   └── manage-blogs.ts
+│   │   │   │   │   ├── manage-categories
+│   │   │   │   │   │   ├── manage-categories.css
+│   │   │   │   │   │   ├── manage-categories.html
+│   │   │   │   │   │   └── manage-categories.ts
+│   │   │   │   │   ├── manage-reports
+│   │   │   │   │   │   ├── manage-reports.css
+│   │   │   │   │   │   ├── manage-reports.html
+│   │   │   │   │   │   └── manage-reports.ts
+│   │   │   │   │   ├── manage-tags
+│   │   │   │   │   │   ├── manage-tags.css
+│   │   │   │   │   │   ├── manage-tags.html
+│   │   │   │   │   │   └── manage-tags.ts
+│   │   │   │   │   └── manage-users
+│   │   │   │   │       ├── manage-users.css
+│   │   │   │   │       ├── manage-users.html
+│   │   │   │   │       └── manage-users.ts
+│   │   │   │   ├── public
+│   │   │   │   │   ├── about
+│   │   │   │   │   │   ├── about.css
+│   │   │   │   │   │   ├── about.html
+│   │   │   │   │   │   └── about.ts
+│   │   │   │   │   ├── blog-detail
+│   │   │   │   │   │   ├── blog-detail.css
+│   │   │   │   │   │   ├── blog-detail.html
+│   │   │   │   │   │   └── blog-detail.ts
+│   │   │   │   │   ├── category-page
+│   │   │   │   │   │   ├── category-page.css
+│   │   │   │   │   │   ├── category-page.html
+│   │   │   │   │   │   └── category-page.ts
+│   │   │   │   │   ├── explore
+│   │   │   │   │   │   ├── explore.css
+│   │   │   │   │   │   ├── explore.html
+│   │   │   │   │   │   └── explore.ts
+│   │   │   │   │   ├── home
+│   │   │   │   │   │   ├── home.css
+│   │   │   │   │   │   ├── home.html
+│   │   │   │   │   │   └── home.ts
+│   │   │   │   │   ├── login
+│   │   │   │   │   │   ├── login.css
+│   │   │   │   │   │   ├── login.html
+│   │   │   │   │   │   └── login.ts
+│   │   │   │   │   ├── membership
+│   │   │   │   │   │   ├── membership.css
+│   │   │   │   │   │   ├── membership.html
+│   │   │   │   │   │   └── membership.ts
+│   │   │   │   │   ├── not-found
+│   │   │   │   │   │   ├── not-found.css
+│   │   │   │   │   │   ├── not-found.html
+│   │   │   │   │   │   └── not-found.ts
+│   │   │   │   │   ├── privacy
+│   │   │   │   │   │   ├── privacy.css
+│   │   │   │   │   │   ├── privacy.html
+│   │   │   │   │   │   └── privacy.ts
+│   │   │   │   │   ├── profile
+│   │   │   │   │   │   ├── profile.css
+│   │   │   │   │   │   ├── profile.html
+│   │   │   │   │   │   └── profile.ts
+│   │   │   │   │   ├── register
+│   │   │   │   │   │   ├── register.css
+│   │   │   │   │   │   ├── register.html
+│   │   │   │   │   │   └── register.ts
+│   │   │   │   │   ├── search
+│   │   │   │   │   │   ├── search.css
+│   │   │   │   │   │   ├── search.html
+│   │   │   │   │   │   └── search.ts
+│   │   │   │   │   ├── tag-page
+│   │   │   │   │   │   ├── tag-page.css
+│   │   │   │   │   │   ├── tag-page.html
+│   │   │   │   │   │   └── tag-page.ts
+│   │   │   │   │   └── terms
+│   │   │   │   │       ├── terms.css
+│   │   │   │   │       ├── terms.html
+│   │   │   │   │       └── terms.ts
+│   │   │   │   └── user
+│   │   │   │       ├── bookmarks
+│   │   │   │       │   ├── bookmarks.css
+│   │   │   │       │   ├── bookmarks.html
+│   │   │   │       │   └── bookmarks.ts
+│   │   │   │       ├── create-blog
+│   │   │   │       │   ├── create-blog.css
+│   │   │   │       │   ├── create-blog.html
+│   │   │   │       │   └── create-blog.ts
+│   │   │   │       ├── dashboard
+│   │   │   │       │   ├── dashboard.css
+│   │   │   │       │   ├── dashboard.html
+│   │   │   │       │   └── dashboard.ts
+│   │   │   │       ├── edit-blog
+│   │   │   │       │   ├── edit-blog.css
+│   │   │   │       │   ├── edit-blog.html
+│   │   │   │       │   └── edit-blog.ts
+│   │   │   │       ├── following
+│   │   │   │       │   ├── following.css
+│   │   │   │       │   ├── following.html
+│   │   │   │       │   └── following.ts
+│   │   │   │       ├── my-blogs
+│   │   │   │       │   ├── my-blogs.css
+│   │   │   │       │   ├── my-blogs.html
+│   │   │   │       │   └── my-blogs.ts
+│   │   │   │       ├── settings
+│   │   │   │       │   ├── settings.css
+│   │   │   │       │   ├── settings.html
+│   │   │   │       │   └── settings.ts
+│   │   │   │       └── stats
+│   │   │   │           ├── stats.css
+│   │   │   │           ├── stats.html
+│   │   │   │           └── stats.ts
+│   │   │   └── shared
+│   │   │       └── components
+│   │   │           ├── blog-card
+│   │   │           │   ├── blog-card.css
+│   │   │           │   ├── blog-card.html
+│   │   │           │   └── blog-card.ts
+│   │   │           ├── confirm-dialog
+│   │   │           │   ├── confirm-dialog.css
+│   │   │           │   ├── confirm-dialog.html
+│   │   │           │   └── confirm-dialog.ts
+│   │   │           ├── tag-chip
+│   │   │           │   ├── tag-chip.css
+│   │   │           │   ├── tag-chip.html
+│   │   │           │   └── tag-chip.ts
+│   │   │           └── user-card
+│   │   │               ├── user-card.css
+│   │   │               ├── user-card.html
+│   │   │               └── user-card.ts
+│   │   ├── environments
+│   │   │   ├── environment.prod.ts
+│   │   │   └── environment.ts
+│   │   ├── index.html
+│   │   ├── main.ts
+│   │   └── styles.css
+│   ├── tsconfig.app.json
+│   ├── tsconfig.json
+│   └── tsconfig.spec.json
+└── server
+    ├── package-lock.json
+    ├── package.json
+    ├── public
+    │   └── images
+    └── src
+        ├── DB
+        │   └── index.js
+        ├── app.js
+        ├── config
+        │   └── jwt.js
+        ├── constants.js
+        ├── controllers
+        │   ├── admin.controller.js
+        │   ├── auth.controller.js
+        │   ├── blog.controller.js
+        │   ├── bookmark.controller.js
+        │   ├── category.controller.js
+        │   ├── comment.controller.js
+        │   ├── report.controller.js
+        │   ├── tag.controller.js
+        │   └── user.controller.js
+        ├── middlewares
+        │   ├── auth.middleware.js
+        │   ├── error.middleware.js
+        │   ├── multer.middlewares.js
+        │   └── rbac.middleware.js
+        ├── models
+        │   ├── blog.model.js
+        │   ├── bookmark.model.js
+        │   ├── category.model.js
+        │   ├── comment.model.js
+        │   ├── follow.model.js
+        │   ├── like.model.js
+        │   ├── report.model.js
+        │   ├── tag.model.js
+        │   └── user.model.js
+        ├── router
+        │   ├── admin.routes.js
+        │   ├── auth.routes.js
+        │   ├── blog.routes.js
+        │   ├── bookmark.routes.js
+        │   ├── category.routes.js
+        │   ├── report.routes.js
+        │   ├── tag.routes.js
+        │   └── user.routes.js
+        ├── schemas
+        │   ├── auth.schema.js
+        │   └── blog.schema.js
+        ├── seed.js
+        ├── server.js
+        └── utils
+            ├── ApiError.js
+            ├── ApiResponse.js
+            ├── asyncHandler.js
+            ├── cloudinary.js
+            └── helper.js
+
+65 directories, 187 files

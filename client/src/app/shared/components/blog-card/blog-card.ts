@@ -15,9 +15,18 @@ import { Tag } from 'primeng/tag';
 export class BlogCard {
   blog = input.required<Blog>();
 
+  private decodeHtmlEntities(text: string): string {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = text;
+    return textarea.value;
+  }
+
   getContentPreview(): string {
-    const text = this.blog().content.replace(/<[^>]*>/g, '');
-    return text.length > 150 ? text.substring(0, 150) + '...' : text;
+    const text = this.blog()
+      .content.replace(/<[^>]*>/g, '')
+      .trim();
+    const decodedText = this.decodeHtmlEntities(text);
+    return decodedText.length > 150 ? decodedText.substring(0, 150) + '...' : decodedText;
   }
 
   getReadTime(): number {

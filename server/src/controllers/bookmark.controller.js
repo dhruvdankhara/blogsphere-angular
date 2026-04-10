@@ -83,6 +83,17 @@ export const getMyBookmarks = asyncHandler(async (req, res) => {
           {
             $project: { userId: 0, __v: 0 },
           },
+          {
+            $lookup: {
+              from: "categories",
+              localField: "category",
+              foreignField: "_id",
+              as: "category",
+            },
+          },
+          {
+            $addFields: { category: { $first: "$category" } },
+          },
         ],
       },
     },
