@@ -13,7 +13,11 @@
           <span
             class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[linear-gradient(135deg,#172033,#355d87)] text-sm font-extrabold tracking-[-0.04em] text-white"
           >
-            <img src="./logo.png" alt="" class="object-cover size-14" />
+            <img
+              src="https://res.cloudinary.com/dhruvdankhara/image/upload/v1739703455/s6bzxwg0bng21j0kvcr1.png"
+              alt=""
+              class="object-cover size-fit rounded-full border-2"
+            />
           </span>
           <span class="hidden min-[561px]:flex min-[561px]:flex-col min-[561px]:leading-tight">
             <strong class="text-2xl font-extrabold tracking-[-0.03em] text-[#172033]"
@@ -143,7 +147,7 @@
         @for (item of navItems; track item.label) {
           <a
             [routerLink]="item.route"
-            routerLinkActive="bg-[#172033] text-white shadow-md"
+            routerLinkActive="bg-[#172033] text-white shadow-md hover:bg-slate-700"
             [routerLinkActiveOptions]="item.route === '/' ? { exact: true } : { exact: false }"
             class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 no-underline transition-all duration-200 font-medium"
           >
